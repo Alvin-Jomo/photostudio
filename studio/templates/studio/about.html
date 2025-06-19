@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- About Hero -->
+<section class="about-hero bg-dark text-white py-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">About Our Studio</h1>
+                <p class="lead">Professional photography with a personal touch</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="{% static 'images/alvin.png' %}" class="img-fluid rounded shadow" alt="Our Studio">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Our Story</h2>
+                <p class="lead">Founded in 2010, PhotoStudio has been capturing life's precious moments with creativity and passion.</p>
+                <p>What started as a small home studio has grown into one of the most sought-after photography studios in the region. Our team of professional photographers brings years of experience and a unique artistic vision to every project.</p>
+                <p>We believe that great photography is about more than just taking pictures - it's about telling stories, preserving memories, and creating art that will be cherished for generations.</p>
+                <div class="mt-4">
+                    <a href="{% url 'studio:contact' %}" class="btn btn-primary">Get in Touch</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Team -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Meet Our Team</h2>
+            <p class="text-muted">The talented professionals behind the lens</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{% static 'images/team1.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Alex Johnson</h5>
+                        <p class="text-muted small">Founder & Lead Photographer</p>
+                        <p class="card-text">With over 15 years of experience, Alex specializes in wedding and portrait photography.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{% static 'images/team2.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Maria Garcia</h5>
+                        <p class="text-muted small">Commercial Photographer</p>
+                        <p class="card-text">Maria brings a creative eye to product and commercial photography projects.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <img src="{% static 'images/team3.jpg' %}" class="card-img-top" alt="Team Member">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Sam Wilson</h5>
+                        <p class="text-muted small">Photo Editor</p>
+                        <p class="card-text">Sam ensures every image meets our high standards of quality and perfection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Values</h2>
+            <p class="text-muted">What makes us different</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-camera-retro fa-2x"></i>
+                    </div>
+                    <h4>Quality</h4>
+                    <p class="text-muted">We use only professional equipment and techniques to deliver the highest quality results.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-heart fa-2x"></i>
+                    </div>
+                    <h4>Passion</h4>
+                    <p class="text-muted">Photography is our passion, and it shows in every image we capture.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                        <i class="fas fa-smile fa-2x"></i>
+                    </div>
+                    <h4>Satisfaction</h4>
+                    <p class="text-muted">Your satisfaction is our top priority. We won't stop until you're thrilled with your photos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

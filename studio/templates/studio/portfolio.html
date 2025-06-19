@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-5">Our Portfolio</h1>
+    
+    <!-- Category Filter -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="btn-group" role="group">
+                <a href="{% url 'studio:portfolio' %}" class="btn btn-outline-primary">All</a>
+                {% for category in categories %}
+                <a href="{% url 'studio:portfolio_by_category' category.slug %}" class="btn btn-outline-primary">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Photo Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for photo in photos %}
+        <div class="col">
+            <div class="card h-100">
+                <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ photo.title }}</h5>
+                    <p class="card-text">{{ photo.description|truncatewords:20 }}</p>
+                    {% if photo.discount_active %}
+                    <p class="text-danger">
+                        <del>Ksh: {{ photo.price }}</del> Ksh: {{ photo.discount_price }}
+                    </p>
+                    {% else %}
+                    <p>Ksh: {{ photo.price }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'studio:photo_detail' photo.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

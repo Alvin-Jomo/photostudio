@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <img src="{{ photo.image.url }}" class="img-fluid rounded" alt="{{ photo.title }}">
+        </div>
+        <div class="col-lg-4">
+            <h1 class="display-5">{{ photo.title }}</h1>
+            <p class="text-muted">Category: <a href="{{ photo.category.get_absolute_url }}">{{ photo.category.name }}</a></p>
+            
+            <div class="my-4">
+                {% if photo.discount_active %}
+                <h3 class="text-danger">
+                    <del class="text-muted">Ksh: {{ photo.price }}</del> 
+                    Ksh: {{ photo.discount_price }}
+                    <span class="badge bg-danger">Sale!</span>
+                </h3>
+                {% else %}
+                <h3>Ksh: {{ photo.price }}</h3>
+                {% endif %}
+                
+                <a href="{% url 'bookings:create_booking' service_id=1 %}" class="btn btn-primary btn-lg mt-3">
+                    Book a Similar Session
+                </a>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">About This Photo</h5>
+                    <p class="card-text">{{ photo.description }}</p>
+                    {% if photo.tags.all %}
+                    <div class="tags mt-3">
+                        {% for tag in photo.tags.all %}
+                        <span class="badge bg-secondary">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if related_photos %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="mb-4">Related Photos</h3>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for photo in related_photos %}
+                <div class="col">
+                    {% include 'studio/partials/_photo_card.html' %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'studio:home' %}">
+            <i class="fas fa-camera me-2"></i>PhotoStudio
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="mainNav">
+            <!-- Main Navigation -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
+                       href="{% url 'studio:home' %}">
+                        Home
+                    </a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {% if 'portfolio' in request.resolver_match.url_name %}active{% endif %}" 
+                       href="#" id="portfolioDropdown" role="button" data-bs-toggle="dropdown">
+                        Portfolio
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'studio:portfolio' %}">
+                                All Photos
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for category in PhotoCategory.objects.all|slice:":5" %}
+                        <li>
+                            <a class="dropdown-item" href="{{ category.get_absolute_url }}">
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% if PhotoCategory.objects.count > 5 %}
+                        <li>
+                            <a class="dropdown-item text-primary" href="{% url 'studio:portfolio' %}">
+                                View All Categories...
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" 
+                       href="{% url 'studio:services' %}">
+                        Services
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+                       href="{% url 'studio:about' %}">
+                        About
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" 
+                       href="{% url 'studio:contact' %}">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- User Navigation -->
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i> 
+                        {{ user.get_short_name|default:user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'bookings:user_bookings' %}">
+                                <i class="fas fa-calendar-alt me-2"></i>My Bookings
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user me-2"></i>Profile
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
+                    </a>
+                </li>
+              
+                {% endif %}
+                
+                <!-- Cart/Booking Indicator -->
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="{% url 'bookings:user_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        {% with user.bookings.count as booking_count %}
+                        {% if booking_count > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ booking_count }}
+                        </span>
+                        {% endif %}
+                        {% endwith %}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Bottom Navigation (for small screens) -->
+<div class="d-lg-none fixed-bottom bg-dark text-white p-2 mobile-nav">
+    <div class="container">
+        <div class="d-flex justify-content-around">
+            <a href="{% url 'studio:home' %}" class="text-white text-center">
+                <i class="fas fa-home d-block"></i>
+                <small>Home</small>
+            </a>
+            <a href="{% url 'studio:portfolio' %}" class="text-white text-center">
+                <i class="fas fa-images d-block"></i>
+                <small>Portfolio</small>
+            </a>
+            <a href="{% url 'studio:services' %}" class="text-white text-center">
+                <i class="fas fa-camera d-block"></i>
+                <small>Services</small>
+            </a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'bookings:user_bookings' %}" class="text-white text-center">
+                <i class="fas fa-calendar-alt d-block"></i>
+                <small>Bookings</small>
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="text-white text-center">
+                <i class="fas fa-user d-block"></i>
+                <small>Account</small>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

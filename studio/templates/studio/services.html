@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Services Hero -->
+<section class="services-hero bg-dark text-white py-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">Our Services</h1>
+                <p class="lead">Professional photography services for all occasions</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services List -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Photography Services</h2>
+                    <p class="text-muted">Choose the perfect package for your needs</p>
+                </div>
+                
+                <div class="accordion" id="servicesAccordion">
+                    {% for service in services %}
+                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                        <h3 class="accordion-header" id="heading{{ forloop.counter }}">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                                <div class="d-flex justify-content-between align-items-center w-100 pe-3">
+                                    <span class="fw-bold">{{ service.name }}</span>
+                                    <span class="badge bg-primary rounded-pill">${{ service.base_price }}</span>
+                                </div>
+                            </button>
+                        </h3>
+                        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#servicesAccordion">
+                            <div class="accordion-body">
+                                <p>{{ service.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="text-muted small"><i class="fas fa-clock me-2"></i>Duration: {{ service.duration }}</span>
+                                    <a href="{% url 'bookings:create_booking' service.id %}" class="btn btn-sm btn-primary">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Comparison -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Pricing Comparison</h2>
+            <p class="text-muted">Find the right package for your needs</p>
+        </div>
+        
+        <div class="row g-4">
+            {% for service in services|slice:":3" %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm {% if forloop.counter == 2 %}border-primary border-2{% endif %}">
+                    {% if forloop.counter == 2 %}
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <span class="badge bg-white text-primary rounded-pill">Most Popular</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body text-center p-4">
+                        <h3 class="card-title">{{ service.name }}</h3>
+                        <h4 class="my-4">${{ service.base_price }}</h4>
+                        <ul class="list-unstyled mb-4">
+                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> {{ service.duration }} session</li>
+                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> Professional editing</li>
+                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> High-resolution images</li>
+                            <li class="py-2"><i class="fas fa-check text-primary me-2"></i> Online gallery</li>
+                        </ul>
+                        <a href="{% url 'bookings:create_booking' service.id %}" class="btn {% if forloop.counter == 2 %}btn-primary{% else %}btn-outline-primary{% endif %} w-100">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Frequently Asked Questions</h2>
+                    <p class="text-muted">Common questions about our services</p>
+                </div>
+                
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                        <h3 class="accordion-header" id="faqHeading1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                                How far in advance should I book my session?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We recommend booking at least 2-4 weeks in advance for portrait sessions and 3-6 months in advance for weddings or large events. However, we'll do our best to accommodate last-minute requests when possible.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                        <h3 class="accordion-header" id="faqHeading2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                                What payment methods do you accept?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. A 50% deposit is required to secure your booking, with the balance due on the day of your session.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                        <h3 class="accordion-header" id="faqHeading3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                                What is your cancellation policy?
+                            </button>
+                        </h3>
+                        <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We understand that plans change. If you need to cancel or reschedule your session, please notify us at least 48 hours in advance for a full refund of your deposit. Cancellations with less than 48 hours notice may forfeit the deposit.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
