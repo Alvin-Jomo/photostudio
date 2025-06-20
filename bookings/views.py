@@ -10,6 +10,10 @@ from .models import Booking, Coupon
 from studio.models import Service
 from .forms import BookingForm
 
+def select_service(request):
+    services = Service.objects.filter(available=True)
+    return render(request, 'bookings/select_service.html', {'services': services})
+
 class CreateBookingView(LoginRequiredMixin, CreateView):
     model = Booking
     form_class = BookingForm
@@ -92,6 +96,11 @@ class CreateBookingView(LoginRequiredMixin, CreateView):
             [booking.client.email],
             fail_silently=False,
         )
+        
+    def dispatch(self, request, *args, **kwargs):
+        if 'service_id' not in kwargs:
+            return redirect('bookings:create_booking')
+        return super().dispatch(request, *args, **kwargs)
 
 class BookingConfirmationView(LoginRequiredMixin, DetailView):
     model = Booking

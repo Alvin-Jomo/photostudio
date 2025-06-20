@@ -15,7 +15,7 @@
         
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <span class="fw-bold">${{ booking.final_price }}</span>
+                <span class="fw-bold">Ksh: {{ booking.final_price }}</span>
                 {% if booking.coupon_code %}
                 <span class="badge bg-success ms-2">{{ booking.coupon_code }}</span>
                 {% endif %}

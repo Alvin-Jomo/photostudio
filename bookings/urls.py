@@ -1,11 +1,12 @@
 from django.urls import path
-from . import views
+from .views import CreateBookingView, BookingConfirmationView, UserBookingsView, validate_coupon, select_service
 
 app_name = 'bookings'
 
 urlpatterns = [
-    path('create/<int:service_id>/', views.CreateBookingView.as_view(), name='create_booking'),
-    path('confirmation/<int:pk>/', views.BookingConfirmationView.as_view(), name='booking_confirmation'),
-    path('my-bookings/', views.UserBookingsView.as_view(), name='user_bookings'),
-    path('validate-coupon/', views.validate_coupon, name='validate_coupon'),
+    path('create/', select_service, name='create_booking'),  # New entry point
+    path('create/<int:service_id>/', CreateBookingView.as_view(), name='create_booking'),
+    path('confirmation/<int:pk>/', BookingConfirmationView.as_view(), name='booking_confirmation'),
+    path('my-bookings/', UserBookingsView.as_view(), name='user_bookings'),
+    path('validate-coupon/', validate_coupon, name='validate_coupon'),
 ]

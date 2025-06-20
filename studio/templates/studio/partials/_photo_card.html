@@ -7,10 +7,10 @@
             <span class="badge bg-secondary">{{ photo.category.name }}</span>
             {% if photo.discount_active %}
             <span class="text-danger fw-bold">
-                <del class="text-muted small">${{ photo.price }}</del> ${{ photo.discount_price }}
+                <del class="text-muted small">Ksh: {{ photo.price }}</del> Ksh: {{ photo.discount_price }}
             </span>
             {% else %}
-            <span class="text-dark fw-bold">${{ photo.price }}</span>
+            <span class="text-dark fw-bold">Ksh: {{ photo.price }}</span>
             {% endif %}
         </div>
     </div>

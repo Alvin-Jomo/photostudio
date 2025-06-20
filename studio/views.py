@@ -118,4 +118,4 @@ class ContactView(TemplateView):
             fail_silently=False,
         )
 
-        
+
