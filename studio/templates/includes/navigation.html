@@ -1,28 +1,32 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'studio:home' %}">
-            <i class="fas fa-camera me-2"></i>PhotoStudio
+    <div class="container-fluid">
+        <!-- Brand/Logo - Far Left with Spin Animation -->
+        <a class="navbar-brand me-5" href="{% url 'studio:home' %}" style="margin-right: 5rem !important;">
+            <i class="fas fa-camera me-2 camera-icon"></i>PhotoStudio
         </a>
+        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse" id="mainNav">
-            <!-- Main Navigation -->
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
+            <!-- Centered Main Navigation -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item mx-2">
                     <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
                        href="{% url 'studio:home' %}">
                         Home
                     </a>
                 </li>
                 
-                <li class="nav-item dropdown">
+                <!-- Portfolio Dropdown (Now shows on click) -->
+                <li class="nav-item dropdown mx-2">
                     <a class="nav-link dropdown-toggle {% if 'portfolio' in request.resolver_match.url_name %}active{% endif %}" 
-                       href="#" id="portfolioDropdown" role="button" data-bs-toggle="dropdown">
+                       href="#" id="portfolioDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Portfolio
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" aria-labelledby="portfolioDropdown">
                         <li>
                             <a class="dropdown-item" href="{% url 'studio:portfolio' %}">
                                 All Photos
@@ -46,21 +50,21 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item mx-2">
                     <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" 
                        href="{% url 'studio:services' %}">
                         Services
                     </a>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item mx-2">
                     <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
                        href="{% url 'studio:about' %}">
                         About
                     </a>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item mx-2">
                     <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" 
                        href="{% url 'studio:contact' %}">
                         Contact
@@ -68,8 +72,8 @@
                 </li>
             </ul>
             
-            <!-- User Navigation -->
-            <ul class="navbar-nav">
+            <!-- Right-aligned User Navigation -->
+            <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
@@ -95,17 +99,7 @@
                         </li>
                     </ul>
                 </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">
-                        <i class="fas fa-sign-in-alt me-1"></i> Login
-                    </a>
-                </li>
-              
-                {% endif %}
                 
-                <!-- Cart/Booking Indicator -->
-                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link position-relative" href="{% url 'bookings:user_bookings' %}">
                         <i class="fas fa-calendar-check"></i>
@@ -118,13 +112,24 @@
                         {% endwith %}
                     </a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-light ms-2" href="{% url 'register' %}">
+                        Register
+                    </a>
+                </li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
 
-<!-- Mobile Bottom Navigation (for small screens) -->
+<!-- Mobile Bottom Navigation -->
 <div class="d-lg-none fixed-bottom bg-dark text-white p-2 mobile-nav">
     <div class="container">
         <div class="d-flex justify-content-around">
@@ -154,3 +159,112 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Navigation Styles */
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    /* Camera Icon Spin Animation */
+    .camera-icon {
+        transition: transform 0.7s ease;
+    }
+    
+    .navbar-brand:hover .camera-icon {
+        transform: rotate(360deg);
+    }
+    
+    .nav-link {
+        position: relative;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        transform: translateY(-2px);
+    }
+    
+    .nav-link.active {
+        font-weight: 500;
+    }
+    
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        width: calc(100% - 2rem);
+        height: 2px;
+        background-color: #0d6efd;
+    }
+    
+    /* Dropdown Styles */
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        animation: fadeIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .dropdown-item {
+        padding: 0.5rem 1.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+    
+    /* Mobile Navigation */
+    .mobile-nav {
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 1020;
+    }
+    
+    .mobile-nav a {
+        padding: 0.5rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .mobile-nav a:hover {
+        color: #0d6efd !important;
+    }
+    
+    .mobile-nav i {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .mobile-nav small {
+        font-size: 0.7rem;
+        display: block;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Portfolio dropdown now works normally (shows on click)
+    // No need for special JavaScript for the dropdown behavior
+    
+    // Mobile navigation active state
+    const mobileLinks = document.querySelectorAll('.mobile-nav a');
+    mobileLinks.forEach(link => {
+        if (link.href === window.location.href) {
+            link.style.color = '#0d6efd';
+        }
+    });
+});
+</script>

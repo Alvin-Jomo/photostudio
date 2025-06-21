@@ -2,45 +2,90 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-5 animate__animated animate__fadeIn">
+    <!-- Messages Display -->
+    {% if messages %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-5">
-                <h1 class="fw-bold">My Bookings</h1>
-                <a href="{% url 'bookings:create_booking' %}" class="btn btn-primary">
+                <h1 class="fw-bold display-5" style="color: #2c3e50;">My Bookings</h1>
+                <a href="{% url 'bookings:create_booking' %}" class="btn btn-primary btn-lg" id="newBookingBtn">
                     <i class="fas fa-plus me-2"></i>New Booking
                 </a>
             </div>
             
             {% if bookings %}
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover align-middle" id="bookingsTable">
                     <thead class="table-light">
                         <tr>
-                            <th>ID</th>
+                            <th class="ps-4">ID</th>
                             <th>Service</th>
                             <th>Date & Time</th>
                             <th>Status</th>
                             <th>Amount</th>
-                            <th>Actions</th>
+                            <th class="pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for booking in bookings %}
-                        <tr>
-                            <td>#{{ booking.id }}</td>
-                            <td>{{ booking.service.name }}</td>
-                            <td>{{ booking.booking_date|date:"M j, Y H:i" }}</td>
+                        <tr class="animate__animated animate__fadeIn" data-booking-id="{{ booking.id }}">
+                            <td class="ps-4 fw-bold">#{{ booking.id }}</td>
                             <td>
-                                <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'pending' %}warning{% elif booking.status == 'completed' %}info{% else %}danger{% endif %}">
+                                <div class="d-flex align-items-center">
+                                    {% if booking.service.image %}
+                                    <img src="{{ booking.service.image.url }}" alt="{{ booking.service.name }}" 
+                                         class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
+                                    {% endif %}
+                                    {{ booking.service.name }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="fw-medium">{{ booking.booking_date|date:"M j, Y" }}</span>
+                                    <small class="text-muted">{{ booking.booking_date|date:"H:i" }}</small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill py-2 px-3 bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'pending' %}warning{% elif booking.status == 'completed' %}info{% elif booking.status == 'cancelled' %}secondary{% else %}danger{% endif %}">
                                     {{ booking.get_status_display }}
                                 </span>
                             </td>
-                            <td>Ksh: {{ booking.final_price }}</td>
-                            <td>
-                                <a href="{% url 'bookings:booking_confirmation' booking.pk %}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
+                            <td class="fw-bold text-primary">Ksh {{ booking.final_price }}</td>
+                            <td class="pe-4">
+                                <div class="d-flex">
+                                    <a href="{% url 'bookings:booking_confirmation' booking.pk %}" 
+                                       class="btn btn-sm btn-outline-primary me-2 view-btn" 
+                                       data-bs-toggle="tooltip" 
+                                       data-bs-title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if booking.status == 'pending' or booking.status == 'confirmed' %}
+                                    <button class="btn btn-sm btn-outline-danger cancel-btn" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#cancelModal" 
+                                            data-booking-id="{{ booking.id }}"
+                                            data-bs-title="Cancel Booking">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    {% else %}
+                                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
@@ -48,15 +93,16 @@
                 </table>
             </div>
             {% else %}
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm animate__animated animate__zoomIn">
                 <div class="card-body text-center py-5">
-                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
-                        <i class="fas fa-calendar-times fa-2x"></i>
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" 
+                         style="width: 100px; height: 100px; line-height: 100px;">
+                        <i class="fas fa-calendar-times fa-3x"></i>
                     </div>
                     <h4 class="mb-3">No Bookings Found</h4>
                     <p class="text-muted mb-4">You haven't made any bookings yet. Browse our services to book your first session.</p>
-                    <a href="{% url 'studio:services' %}" class="btn btn-primary">
-                        <i class="fas fa-camera me-2"></i>View Services
+                    <a href="{% url 'studio:services' %}" class="btn btn-primary btn-lg px-4">
+                        <i class="fas fa-spa me-2"></i>View Services
                     </a>
                 </div>
             </div>
@@ -64,4 +110,168 @@
         </div>
     </div>
 </div>
+
+<!-- Cancel Booking Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this booking?</p>
+                <p class="text-muted small">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <form method="post" action="" id="cancelBookingForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <button type="submit" class="btn btn-danger">Confirm Cancellation</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    /* Table Styles */
+    #bookingsTable {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    #bookingsTable thead th {
+        border-bottom-width: 1px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+    }
+    
+    #bookingsTable tbody tr {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+    
+    #bookingsTable tbody tr:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+        border-left: 4px solid #667eea;
+        transform: translateX(5px);
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .view-btn, .cancel-btn {
+        transition: all 0.2s ease;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50% !important;
+    }
+    
+    .view-btn:hover {
+        background-color: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+    }
+    
+    .cancel-btn:hover {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+    
+    /* Status Badges */
+    .badge {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Empty State Card */
+    .icon-box {
+        transition: all 0.3s ease;
+    }
+    
+    .icon-box:hover {
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 12px;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+    
+    // Cancel booking modal handling
+    const cancelButtons = document.querySelectorAll('.cancel-btn');
+    const cancelForm = document.getElementById('cancelBookingForm');
+    
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const bookingId = this.getAttribute('data-booking-id');
+            // Using Django's URL template tag pattern
+            cancelForm.action = `/bookings/${bookingId}/cancel/`;
+        });
+    });
+    
+    // Animate table rows on load
+    const tableRows = document.querySelectorAll('#bookingsTable tbody tr');
+    tableRows.forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.05}s`;
+    });
+    
+    // Make table rows clickable (except action buttons)
+    tableRows.forEach(row => {
+        const viewBtn = row.querySelector('.view-btn');
+        
+        row.addEventListener('click', function(e) {
+            // Don't navigate if clicking on buttons or disabled elements
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.disabled')) {
+                return;
+            }
+            window.location.href = viewBtn.href;
+        });
+    });
+    
+    // Hover effect for new booking button
+    const newBookingBtn = document.getElementById('newBookingBtn');
+    if (newBookingBtn) {
+        newBookingBtn.addEventListener('mouseenter', function() {
+            this.classList.add('animate__pulse');
+        });
+        
+        newBookingBtn.addEventListener('mouseleave', function() {
+            this.classList.remove('animate__pulse');
+        });
+    }
+});
+</script>
 {% endblock %}

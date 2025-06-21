@@ -5,36 +5,36 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-lg-8">
-            <img src="{{ photo.image.url }}" class="img-fluid rounded" alt="{{ photo.title }}">
+            <img src="{{ photo.image.url }}" class="img-fluid rounded photo-main-image" alt="{{ photo.title }}" id="mainPhoto">
         </div>
         <div class="col-lg-4">
-            <h1 class="display-5">{{ photo.title }}</h1>
-            <p class="text-muted">Category: <a href="{{ photo.category.get_absolute_url }}">{{ photo.category.name }}</a></p>
+            <h1 class="display-5 animate-title">{{ photo.title }}</h1>
+            <p class="text-muted animate-fade-in">Category: <a href="{{ photo.category.get_absolute_url }}">{{ photo.category.name }}</a></p>
             
-            <div class="my-4">
+            <div class="my-4 animate-fade-in" style="animation-delay: 0.2s;">
                 {% if photo.discount_active %}
-                <h3 class="text-danger">
+                <h3 class="text-danger price-animation">
                     <del class="text-muted">Ksh: {{ photo.price }}</del> 
                     Ksh: {{ photo.discount_price }}
-                    <span class="badge bg-danger">Sale!</span>
+                    <span class="badge bg-danger pulse">Sale!</span>
                 </h3>
                 {% else %}
-                <h3>Ksh: {{ photo.price }}</h3>
+                <h3 class="price-animation">Ksh: {{ photo.price }}</h3>
                 {% endif %}
                 
-                <a href="{% url 'bookings:create_booking' service_id=1 %}" class="btn btn-primary btn-lg mt-3">
+                <a href="{% url 'bookings:create_booking' service_id=1 %}" class="btn btn-primary btn-lg mt-3 hover-grow">
                     Book a Similar Session
                 </a>
             </div>
             
-            <div class="card mb-4">
+            <div class="card mb-4 card-pop">
                 <div class="card-body">
                     <h5 class="card-title">About This Photo</h5>
                     <p class="card-text">{{ photo.description }}</p>
                     {% if photo.tags.all %}
                     <div class="tags mt-3">
                         {% for tag in photo.tags.all %}
-                        <span class="badge bg-secondary">{{ tag.name }}</span>
+                        <span class="badge bg-secondary tag-hover">{{ tag.name }}</span>
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -46,10 +46,10 @@
     {% if related_photos %}
     <div class="row mt-5">
         <div class="col-12">
-            <h3 class="mb-4">Related Photos</h3>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <h3 class="mb-4 animate-fade-in">Related Photos</h3>
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="relatedPhotos">
                 {% for photo in related_photos %}
-                <div class="col">
+                <div class="col photo-card">
                     {% include 'studio/partials/_photo_card.html' %}
                 </div>
                 {% endfor %}
@@ -58,4 +58,179 @@
     </div>
     {% endif %}
 </div>
+
+<style>
+    /* Animation styles */
+    .animate-title {
+        animation: slideInFromLeft 0.8s ease-out;
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 1s ease-in;
+    }
+    
+    .photo-main-image {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .photo-main-image:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    .hover-grow {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-grow:hover {
+        transform: scale(1.05);
+    }
+    
+    .card-pop {
+        animation: popIn 0.5s ease-out;
+    }
+    
+    .tag-hover {
+        transition: all 0.2s ease;
+    }
+    
+    .tag-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .price-animation {
+        animation: bounceIn 0.8s;
+    }
+    
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    .photo-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    @keyframes slideInFromLeft {
+        0% {
+            transform: translateX(-50px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes popIn {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        80% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes bounceIn {
+        0%, 20%, 40%, 60%, 80%, 100% {transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);}
+        0% {
+            opacity: 0;
+            transform: scale3d(.3, .3, .3);
+        }
+        20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+        }
+        40% {
+            transform: scale3d(.9, .9, .9);
+        }
+        60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+        }
+        80% {
+            transform: scale3d(.97, .97, .97);
+        }
+        100% {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+        }
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+        }
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+        }
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate related photos in sequence
+        const photoCards = document.querySelectorAll('.photo-card');
+        photoCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 200 * index);
+        });
+        
+        // Add zoom effect to main photo on click
+        const mainPhoto = document.getElementById('mainPhoto');
+        if (mainPhoto) {
+            mainPhoto.addEventListener('click', function() {
+                this.classList.toggle('zoomed');
+                if (this.classList.contains('zoomed')) {
+                    this.style.transform = 'scale(1.5)';
+                    this.style.zIndex = '1000';
+                    this.style.cursor = 'zoom-out';
+                } else {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = 'auto';
+                    this.style.cursor = 'zoom-in';
+                }
+            });
+        }
+        
+        // Add hover effect to booking button
+        const bookButton = document.querySelector('.hover-grow');
+        if (bookButton) {
+            bookButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            bookButton.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+        
+        // Parallax effect for the main container
+        window.addEventListener('scroll', function() {
+            const scrolled = window.scrollY;
+            const container = document.querySelector('.container.py-5');
+            if (container) {
+                container.style.backgroundPosition = `center ${scrolled * 0.3}px`;
+            }
+        });
+    });
+</script>
 {% endblock %}

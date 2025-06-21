@@ -2,36 +2,42 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container py-5 animate__animated animate__fadeIn">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h3>Book {{ service.name }}</h3>
+            <div class="card shadow-lg border-0 animate__animated animate__zoomIn" style="border-radius: 12px; overflow: hidden;">
+                <div class="card-header text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3 class="mb-0"><i class="far fa-calendar-check me-2"></i>Book {{ service.name }}</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form method="POST" id="bookingForm">
                         {% csrf_token %}
-                        {{ form|crispy }}
+                        <div class="animate__animated animate__fadeIn animate__delay-1s">
+                            {{ form|crispy }}
+                        </div>
                         
-                        <div class="row mt-3">
-                            <div class="col-md-6">
+                        <div class="row mt-3 animate__animated animate__fadeIn animate__delay-1-2s">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label>Base Price</label>
-                                    <input type="text" class="form-control" value="Ksh: {{ service.base_price }}" readonly>
+                                    <label class="form-label"><i class="fas fa-tag me-2"></i>Base Price</label>
+                                    <input type="text" class="form-control form-control-lg" value="Ksh: {{ service.base_price }}" readonly style="background-color: #f8f9fa;">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <div class="form-group">
-                                    <label>Final Price</label>
-                                    <input type="text" class="form-control" id="finalPrice" value="Ksh: {{ service.base_price }}" readonly>
+                                    <label class="form-label"><i class="fas fa-receipt me-2"></i>Final Price</label>
+                                    <input type="text" class="form-control form-control-lg fw-bold" id="finalPrice" value="Ksh: {{ service.base_price }}" readonly style="color: #764ba2; background-color: #f8f9fa;">
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-primary">Confirm Booking</button>
-                            <a href="{% url 'studio:services' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <div class="d-grid gap-3 mt-4 animate__animated animate__fadeIn animate__delay-1-5s">
+                            <button type="submit" class="btn btn-primary btn-lg py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                                <i class="fas fa-check-circle me-2"></i>Confirm Booking
+                            </button>
+                            <a href="{% url 'studio:services' %}" class="btn btn-outline-secondary btn-lg py-3">
+                                <i class="fas fa-times-circle me-2"></i>Cancel
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -40,18 +46,104 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    /* Form input styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .form-control:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 0.25rem rgba(118, 75, 162, 0.25);
+    }
+    
+    /* Card styling */
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Button styling */
+    .btn {
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary:hover {
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-outline-secondary:hover {
+        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+    }
+    
+    /* Form labels */
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+    
+    /* Crispy forms adjustments */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize date picker
-    flatpickr("#id_booking_date", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "today",
-        disable: [
-            function(date) {
-                return (date.getDay() === 0); // Disable Sundays
+    // Initialize date picker with animation
+    const datePicker = document.getElementById('id_booking_date');
+    
+    if (datePicker) {
+        flatpickr(datePicker, {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            disable: [
+                function(date) {
+                    return (date.getDay() === 0); // Disable Sundays
+                }
+            ],
+            onReady: function() {
+                datePicker.classList.add('animate__animated', 'animate__fadeIn');
             }
-        ]
+        });
+    }
+    
+    // Add animation to form elements when they come into view
+    const animatedElements = document.querySelectorAll('.animate__animated');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        observer.observe(el);
     });
 });
 </script>

@@ -7,15 +7,15 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-4">Our Services</h1>
-                <p class="lead">Professional photography services for all occasions</p>
+                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">Our Services</h1>
+                <p class="lead animate__animated animate__fadeIn animate__delay-1s">Professional photography services for all occasions</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Services List -->
-<section class="py-5">
+<section class="py-5" id="services-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
@@ -26,12 +26,12 @@
                 
                 <div class="accordion" id="servicesAccordion">
                     {% for service in services %}
-                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <div class="accordion-item mb-3 border-0 shadow-sm hover-lift">
                         <h3 class="accordion-header" id="heading{{ forloop.counter }}">
-                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} hover-grow" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ forloop.counter }}">
                                 <div class="d-flex justify-content-between align-items-center w-100 pe-3">
                                     <span class="fw-bold">{{ service.name }}</span>
-                                    <span class="badge bg-primary rounded-pill">${{ service.base_price }}</span>
+                                    <span class="badge bg-primary rounded-pill">KSH {{ service.base_price }}</span>
                                 </div>
                             </button>
                         </h3>
@@ -40,7 +40,7 @@
                                 <p>{{ service.description }}</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="text-muted small"><i class="fas fa-clock me-2"></i>Duration: {{ service.duration }}</span>
-                                    <a href="{% url 'bookings:create_booking' service.id %}" class="btn btn-sm btn-primary">Book Now</a>
+                                    <a href="{% url 'bookings:create_booking' service.id %}" class="btn btn-sm btn-primary hover-scale">Book Now</a>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
 </section>
 
 <!-- Pricing Comparison -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light" id="pricing-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold">Pricing Comparison</h2>
@@ -63,7 +63,7 @@
         <div class="row g-4">
             {% for service in services|slice:":3" %}
             <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm {% if forloop.counter == 2 %}border-primary border-2{% endif %}">
+                <div class="card h-100 border-0 shadow-sm hover-lift pricing-card {% if forloop.counter == 2 %}border-primary border-2 popular-card{% endif %}">
                     {% if forloop.counter == 2 %}
                     <div class="card-header bg-primary text-white text-center py-3">
                         <span class="badge bg-white text-primary rounded-pill">Most Popular</span>
@@ -71,14 +71,14 @@
                     {% endif %}
                     <div class="card-body text-center p-4">
                         <h3 class="card-title">{{ service.name }}</h3>
-                        <h4 class="my-4">${{ service.base_price }}</h4>
+                        <h4 class="my-4">KSH {{ service.base_price }}</h4>
                         <ul class="list-unstyled mb-4">
-                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> {{ service.duration }} session</li>
-                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> Professional editing</li>
-                            <li class="py-2 border-bottom"><i class="fas fa-check text-primary me-2"></i> High-resolution images</li>
-                            <li class="py-2"><i class="fas fa-check text-primary me-2"></i> Online gallery</li>
+                            <li class="py-2 border-bottom hover-highlight"><i class="fas fa-check text-primary me-2"></i> {{ service.duration }} session</li>
+                            <li class="py-2 border-bottom hover-highlight"><i class="fas fa-check text-primary me-2"></i> Professional editing</li>
+                            <li class="py-2 border-bottom hover-highlight"><i class="fas fa-check text-primary me-2"></i> High-resolution images</li>
+                            <li class="py-2 hover-highlight"><i class="fas fa-check text-primary me-2"></i> Online gallery</li>
                         </ul>
-                        <a href="{% url 'bookings:create_booking' service.id %}" class="btn {% if forloop.counter == 2 %}btn-primary{% else %}btn-outline-primary{% endif %} w-100">Book Now</a>
+                        <a href="{% url 'bookings:create_booking' service.id %}" class="btn {% if forloop.counter == 2 %}btn-primary{% else %}btn-outline-primary{% endif %} w-100 hover-scale">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -88,7 +88,7 @@
 </section>
 
 <!-- FAQ -->
-<section class="py-5">
+<section class="py-5" id="faq-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
@@ -98,9 +98,9 @@
                 </div>
                 
                 <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <div class="accordion-item mb-3 border-0 shadow-sm hover-lift">
                         <h3 class="accordion-header" id="faqHeading1">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
+                            <button class="accordion-button collapsed hover-grow" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1">
                                 How far in advance should I book my session?
                             </button>
                         </h3>
@@ -111,22 +111,22 @@
                         </div>
                     </div>
                     
-                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <div class="accordion-item mb-3 border-0 shadow-sm hover-lift">
                         <h3 class="accordion-header" id="faqHeading2">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                            <button class="accordion-button collapsed hover-grow" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
                                 What payment methods do you accept?
                             </button>
                         </h3>
                         <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. A 50% deposit is required to secure your booking, with the balance due on the day of your session.
+                                We accept M-Pesa, all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. A 50% deposit is required to secure your booking, with the balance due on the day of your session.
                             </div>
                         </div>
                     </div>
                     
-                    <div class="accordion-item mb-3 border-0 shadow-sm">
+                    <div class="accordion-item mb-3 border-0 shadow-sm hover-lift">
                         <h3 class="accordion-header" id="faqHeading3">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                            <button class="accordion-button collapsed hover-grow" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
                                 What is your cancellation policy?
                             </button>
                         </h3>
@@ -141,4 +141,157 @@
         </div>
     </div>
 </section>
+
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Book Your Session</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="lead">Ready to book your photography session?</p>
+                <p>Select a service to continue:</p>
+                <div class="list-group">
+                    {% for service in services %}
+                    <a href="{% url 'bookings:create_booking' service.id %}" class="list-group-item list-group-item-action hover-highlight">
+                        {{ service.name }} - KSH {{ service.base_price }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Add Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+    /* Custom CSS for transitions and effects */
+    .hover-scale {
+        transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+        transform: scale(1.05);
+    }
+    
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .hover-grow {
+        transition: transform 0.3s ease;
+    }
+    .hover-grow:hover {
+        transform: scale(1.02);
+    }
+    
+    .hover-highlight {
+        transition: all 0.2s ease;
+    }
+    .hover-highlight:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+        padding-left: 10px;
+        border-radius: 5px;
+    }
+    
+    .popular-card {
+        transform: scale(1.02);
+        z-index: 1;
+    }
+    
+    .pricing-card {
+        transition: all 0.3s ease;
+    }
+    
+    /* Animation for sections when scrolling */
+    .fade-in-section {
+        opacity: 0;
+        transition: opacity 1s ease, transform 1s ease;
+        transform: translateY(20px);
+    }
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Accordion improvements */
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(13, 110, 253, 0.05);
+        color: #0d6efd;
+    }
+    
+    .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(13, 110, 253, 0.25);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add intersection observer for scroll animations
+        const sections = document.querySelectorAll('#services-section, #pricing-section, #faq-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        sections.forEach(section => {
+            section.classList.add('fade-in-section');
+            observer.observe(section);
+        });
+        
+        // Highlight popular pricing card
+        const popularCard = document.querySelector('.popular-card');
+        if (popularCard) {
+            popularCard.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            popularCard.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1.02)';
+            });
+        }
+        
+        // Add click animation to all buttons
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+        
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
 {% endblock %}

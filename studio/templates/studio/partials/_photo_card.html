@@ -1,10 +1,33 @@
-<div class="card h-100 border-0 shadow-sm">
-    <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}" style="height: 200px; object-fit: cover;">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<div class="photo-card h-100 border-0 shadow-sm" data-aos="fade-up">
+    <div class="image-container">
+        <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.title }}">
+    </div>
     <div class="card-body">
         <h5 class="card-title">{{ photo.title }}</h5>
         <p class="card-text text-muted small">{{ photo.description|truncatewords:15 }}</p>
         <div class="d-flex justify-content-between align-items-center">
-            <span class="badge bg-secondary">{{ photo.category.name }}</span>
+           <span 
+  class="badge" 
+  style="
+    background: linear-gradient(135deg, #efeff3 0%, #e9eaee 100%);
+    color: #101111 !important;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.1);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    glowing: rgba(0, 255, 255, 0.4);
+  "
+  onmouseover="this.style.boxShadow='0 0 15px rgba(0, 255, 255, 0.4)'; this.style.transform='translateY(-2px)'"
+  onmouseout="this.style.boxShadow='0 2px 8px rgba(0, 255, 255, 0.1)'; this.style.transform='translateY(0)'"
+>
+  {{ photo.category.name }}
+</span>     
             {% if photo.discount_active %}
             <span class="text-danger fw-bold">
                 <del class="text-muted small">Ksh: {{ photo.price }}</del> Ksh: {{ photo.discount_price }}
@@ -15,11 +38,112 @@
         </div>
     </div>
     <div class="card-footer bg-transparent border-0">
-        <a href="{{ photo.get_absolute_url }}" class="btn btn-sm btn-outline-primary w-100">View Details</a>
+        <a href="{{ photo.get_absolute_url }}" class="btn btn-sm btn-outline-primary w-100 view-details-btn">View Details</a>
     </div>
-</div> 
+</div>
+
+<style>
+    .photo-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: white;
+    }
+    
+    .photo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .image-container {
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .photo-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        color: #333;
+    }
+    
+    .view-details-btn {
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+    }
+    
+    .view-details-btn:hover {
+        background-color: #0d6efd;
+        color: white;
+        letter-spacing: 1px;
+    }
+    
+    .badge {
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS (Animate On Scroll) library for entrance animations
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+        }
+        
+        // Add hover effects to all photo cards
+        const photoCards = document.querySelectorAll('.photo-card');
+        
+        photoCards.forEach(card => {
+            // Click effect
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 200);
+            });
+            
+            // Add ripple effect to buttons
+            const buttons = card.querySelectorAll('.view-details-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 0 5px rgba(13, 110, 253, 0.2)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    });
+</script>
+
 {% comment %}
-    This code creates a photo card that displays the photo's image, title, description, category, and price.
-    If the photo has an active discount, it shows the original price with a strikethrough and the discounted price.
-    A button to view details of the photo is also included.
+    Enhanced photo card with:
+    1. Smooth hover effects (lift and shadow)
+    2. Image zoom on hover
+    3. Button animations (color change and ripple effect)
+    4. Entrance animations using AOS library
+    5. Click feedback animation
+    6. Improved styling with better spacing and rounded corners
 {% endcomment %}

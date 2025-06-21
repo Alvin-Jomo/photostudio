@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CreateBookingView, BookingConfirmationView, UserBookingsView, validate_coupon, select_service
+from .views import CreateBookingView, CancelBookingView, BookingConfirmationView, UserBookingsView, validate_coupon, select_service
 
 app_name = 'bookings'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('confirmation/<int:pk>/', BookingConfirmationView.as_view(), name='booking_confirmation'),
     path('my-bookings/', UserBookingsView.as_view(), name='user_bookings'),
     path('validate-coupon/', validate_coupon, name='validate_coupon'),
+    path('bookings/<int:pk>/cancel/', CancelBookingView.as_view(), name='cancel_booking'),
 ]

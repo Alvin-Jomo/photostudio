@@ -7,8 +7,8 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-4">About Our Studio</h1>
-                <p class="lead">Professional photography with a personal touch</p>
+                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">About Our Studio</h1>
+                <p class="lead animate__animated animate__fadeIn animate__delay-1s">Professional photography with a personal touch</p>
             </div>
         </div>
     </div>
@@ -19,7 +19,8 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="{% static 'images/alvin.png' %}" class="img-fluid rounded shadow" alt="Our Studio">
+                <img src="{% static 'images/alvin.png' %}" class="img-fluid rounded shadow zoom-hover" alt="Our Studio" 
+                     data-bs-toggle="modal" data-bs-target="#studioModal">
             </div>
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-4">Our Story</h2>
@@ -27,7 +28,7 @@
                 <p>What started as a small home studio has grown into one of the most sought-after photography studios in the region. Our team of professional photographers brings years of experience and a unique artistic vision to every project.</p>
                 <p>We believe that great photography is about more than just taking pictures - it's about telling stories, preserving memories, and creating art that will be cherished for generations.</p>
                 <div class="mt-4">
-                    <a href="{% url 'studio:contact' %}" class="btn btn-primary">Get in Touch</a>
+                    <a href="{% url 'studio:contact' %}" class="btn btn-primary hover-scale">Get in Touch</a>
                 </div>
             </div>
         </div>
@@ -35,40 +36,55 @@
 </section>
 
 <!-- Our Team -->
-<section class="py-5 bg-light">
+<section class="py-5 bg-light" id="team-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold">Meet Our Team</h2>
             <p class="text-muted">The talented professionals behind the lens</p>
         </div>
-        <div class="row g-4">
+        <div class="row g-4 team-members">
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <img src="{% static 'images/team1.jpg' %}" class="card-img-top" alt="Team Member">
+                <div class="card border-0 shadow-sm h-100 team-card">
+                    <img src="{% static 'images/team1.jpg' %}" class="card-img-top team-img" alt="Team Member">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">Alex Johnson</h5>
                         <p class="text-muted small">Founder & Lead Photographer</p>
                         <p class="card-text">With over 15 years of experience, Alex specializes in wedding and portrait photography.</p>
+                        <div class="social-links mt-3">
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <img src="{% static 'images/team2.jpg' %}" class="card-img-top" alt="Team Member">
+                <div class="card border-0 shadow-sm h-100 team-card">
+                    <img src="{% static 'images/team2.jpg' %}" class="card-img-top team-img" alt="Team Member">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">Maria Garcia</h5>
                         <p class="text-muted small">Commercial Photographer</p>
                         <p class="card-text">Maria brings a creative eye to product and commercial photography projects.</p>
+                        <div class="social-links mt-3">
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <img src="{% static 'images/team3.jpg' %}" class="card-img-top" alt="Team Member">
+                <div class="card border-0 shadow-sm h-100 team-card">
+                    <img src="{% static 'images/team3.jpg' %}" class="card-img-top team-img" alt="Team Member">
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">Sam Wilson</h5>
                         <p class="text-muted small">Photo Editor</p>
                         <p class="card-text">Sam ensures every image meets our high standards of quality and perfection.</p>
+                        <div class="social-links mt-3">
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,7 +93,7 @@
 </section>
 
 <!-- Our Values -->
-<section class="py-5">
+<section class="py-5" id="values-section">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold">Our Values</h2>
@@ -85,8 +101,8 @@
         </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="text-center p-4">
-                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                <div class="text-center p-4 value-card">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
                         <i class="fas fa-camera-retro fa-2x"></i>
                     </div>
                     <h4>Quality</h4>
@@ -94,8 +110,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center p-4">
-                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                <div class="text-center p-4 value-card">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
                         <i class="fas fa-heart fa-2x"></i>
                     </div>
                     <h4>Passion</h4>
@@ -103,8 +119,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center p-4">
-                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4" style="width: 80px; height: 80px; line-height: 80px;">
+                <div class="text-center p-4 value-card">
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
                         <i class="fas fa-smile fa-2x"></i>
                     </div>
                     <h4>Satisfaction</h4>
@@ -114,4 +130,142 @@
         </div>
     </div>
 </section>
+
+<!-- Image Modal -->
+<div class="modal fade" id="studioModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{% static 'images/alvin.png' %}" class="img-fluid" alt="Studio Full View">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Add Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+    /* Custom CSS for transitions and effects */
+    .zoom-hover {
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+    .zoom-hover:hover {
+        transform: scale(1.03);
+    }
+    
+    .hover-scale {
+        transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+        transform: scale(1.05);
+    }
+    
+    .team-card {
+        transition: all 0.3s ease;
+        transform: translateY(0);
+    }
+    .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .team-img {
+        transition: transform 0.5s ease;
+    }
+    .team-card:hover .team-img {
+        transform: scale(1.05);
+    }
+    
+    .social-links {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .team-card:hover .social-links {
+        opacity: 1;
+    }
+    
+    .hover-rotate {
+        transition: transform 0.3s ease;
+    }
+    .hover-rotate:hover {
+        transform: rotate(15deg);
+    }
+    
+    .value-card {
+        transition: all 0.3s ease;
+    }
+    .value-card:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+        border-radius: 10px;
+    }
+    
+    /* Animation for sections when scrolling */
+    .fade-in-section {
+        opacity: 0;
+        transition: opacity 1s ease, transform 1s ease;
+        transform: translateY(20px);
+    }
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add intersection observer for scroll animations
+        const fadeSections = document.querySelectorAll('#team-section, #values-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        fadeSections.forEach(section => {
+            section.classList.add('fade-in-section');
+            observer.observe(section);
+        });
+        
+        // Team member hover effect
+        const teamCards = document.querySelectorAll('.team-card');
+        teamCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset;
+            const aboutHero = document.querySelector('.about-hero');
+            aboutHero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+        });
+    });
+</script>
 {% endblock %}

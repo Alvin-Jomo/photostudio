@@ -95,7 +95,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 JAZZMIN_SETTINGS = {
     'site_header': "photo studio",
     'site_brand': "photoshop",
-      'copyright': "alvotheboss",
+     'copyright': "alvotheboss",
 }
 
 JAZZMIN_UI_TWEAKS = {
@@ -138,7 +138,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'alvotheboss@gmail.com'
-EMAIL_HOST_PASSWORD = 'aojvktiwmwjwhddq'
-DEFAULT_FROM_EMAIL = 'alvotheboss@gmail.com'
-CONTACT_EMAIL = 'alvotheboss@gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('dubuzjtlcjlnrkvp')  # Set in environment
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
+CONTACT_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
+ADMIN_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')

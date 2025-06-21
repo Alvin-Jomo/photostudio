@@ -1,83 +1,13 @@
-<style>
-    .card {
-    transition: all 0.3s ease;
-    border-radius: 0.5rem;
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-}
-
-.card-img-top {
-    width: 100%;
-    object-position: center;
-    transition: opacity 0.3s ease;
-}
-
-.card:hover .card-img-top {
-    opacity: 0.9;
-}
-
-.card-body {
-    padding: 1.25rem;
-}
-
-.card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    color: #333;
-}
-
-.card-text {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-}
-
-.badge {
-    font-weight: 500;
-    padding: 0.35em 0.65em;
-}
-
-.card-footer {
-    padding: 1rem 1.25rem;
-}
-
-.btn {
-    font-weight: 500;
-    transition: all 0.2s ease;
-    border-radius: 0.25rem;
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.fa-camera {
-    opacity: 0.7;
-}
-
-.text-muted {
-    color: #6c757d !important;
-}
-
-.bg-secondary {
-    background-color: #6c757d !important;
-}
-
-.bg-primary {
-    background-color: #0d6efd !important;
-}
-</style>
-<div class="card h-100 border-0 shadow-sm">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<div class="service-card h-100 border-0 shadow-sm" data-aos="fade-up" data-aos-delay="100">
     {% if service.cover_image %}
-    <img src="{{ service.cover_image.url }}" class="card-img-top" alt="{{ service.name }}" style="height: 200px; object-fit: cover;">
+    <div class="card-img-container">
+        <img src="{{ service.cover_image.url }}" class="card-img-top" alt="{{ service.name }}">
+        <div class="img-overlay"></div>
+    </div>
     {% else %}
-    <div class="card-img-top bg-secondary" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+    <div class="card-img-placeholder bg-primary-gradient">
         <i class="fas fa-camera fa-3x text-white"></i>
     </div>
     {% endif %}
@@ -85,15 +15,253 @@
         <h5 class="card-title">{{ service.name }}</h5>
         <p class="card-text text-muted small">{{ service.description|truncatewords:20 }}</p>
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <span class="badge bg-primary rounded-pill">Ksh: {{ service.base_price }}</span>
-            <span class="text-muted small"><i class="fas fa-clock me-1"></i> {{ service.duration }}</span>
+            <span class="price-badge">Ksh: {{ service.base_price }}</span>
+            <span class="duration-badge"><i class="fas fa-clock me-1"></i> {{ service.duration }}</span>
         </div>
     </div>
     <div class="card-footer bg-transparent border-0">
-        <a href="{% url 'bookings:create_booking' service.id %}" class="btn btn-sm btn-primary w-100">Book Now</a>
+        <a href="{% url 'bookings:create_booking' service.id %}" class="book-now-btn">
+            <span>Book Now</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
     </div>
 </div>
+
+<style>
+    .service-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        background: white;
+        position: relative;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .card-img-container {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.6s ease;
+    }
+    
+    .img-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .service-card:hover .card-img-top {
+        transform: scale(1.08);
+    }
+    
+    .service-card:hover .img-overlay {
+        opacity: 1;
+    }
+    
+    .card-img-placeholder {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s ease;
+    }
+    
+    .bg-primary-gradient {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+    
+    .service-card:hover .card-img-placeholder {
+        transform: scale(1.02);
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #2c3e50;
+        transition: color 0.3s ease;
+    }
+    
+    .service-card:hover .card-title {
+        color: #0d6efd;
+    }
+    
+    .price-badge {
+        background-color: #0d6efd;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover .price-badge {
+        background-color: #0b5ed7;
+        transform: scale(1.05);
+    }
+    
+    .duration-badge {
+        color: #6c757d;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover .duration-badge {
+        color: #495057;
+    }
+    
+    .book-now-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.4s ease;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .book-now-btn i {
+        margin-left: 8px;
+        transform: translateX(-5px);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .book-now-btn:hover {
+        background-color: #0b5ed7;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+    
+    .book-now-btn:hover i {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .book-now-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+    
+    .book-now-btn:hover::after {
+        left: 100%;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS for scroll animations
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    }
+
+    // Add click ripple effect to all service cards
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    serviceCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Only trigger ripple if not clicking on the Book Now button
+            if (!e.target.closest('.book-now-btn')) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+        });
+    });
+
+    // Add hover sound effect (optional)
+    const hoverSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+    hoverSound.volume = 0.3;
+    
+    const bookButtons = document.querySelectorAll('.book-now-btn');
+    bookButtons.forEach(btn => {
+        btn.addEventListener('mouseenter', () => {
+            hoverSound.currentTime = 0;
+            hoverSound.play().catch(e => console.log('Audio play failed:', e));
+        });
+    });
+});
+
+// Add ripple effect styles
+const style = document.createElement('style');
+style.textContent = `
+    .ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(13, 110, 253, 0.3);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+        pointer-events: none;
+    }
+    
+    @keyframes ripple {
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+
 {% comment %}
-    This code creates a service card that displays the service's cover image, name, description, base price, duration, and a button to book the service.
-    If the service does not have a cover image, a placeholder with an icon is shown.
+    Enhanced service card features:
+    1. Smooth hover effects with 3D lift and shadow
+    2. Image zoom with overlay effect
+    3. Animated "Book Now" button with arrow icon transition
+    4. Price badge animation on hover
+    5. Ripple click effect
+    6. Gradient placeholder for missing images
+    7. Scroll entrance animation (requires AOS library)
+    8. Optional hover sound effect
+    9. Improved typography and spacing
+    10. Subtle color transitions on hover
 {% endcomment %}

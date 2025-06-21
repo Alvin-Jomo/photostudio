@@ -1,28 +1,197 @@
-<div class="card mb-3 border-0 shadow-sm">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<div class="booking-card card mb-3 border-0 shadow-sm" data-aos="fade-up">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
                 <h5 class="card-title mb-1">{{ booking.service.name }}</h5>
-                <p class="card-text text-muted small mb-0">
+                <p class="booking-date card-text text-muted small mb-0">
                     <i class="fas fa-calendar-alt me-1"></i> 
                     {{ booking.booking_date|date:"F j, Y H:i" }}
                 </p>
             </div>
-            <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'pending' %}warning{% elif booking.status == 'completed' %}info{% else %}danger{% endif %}">
+            <span class="status-badge badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'pending' %}warning{% elif booking.status == 'completed' %}info{% else %}danger{% endif %} pulse">
                 {{ booking.get_status_display }}
             </span>
         </div>
         
         <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <span class="fw-bold">Ksh: {{ booking.final_price }}</span>
+            <div class="price-container">
+                <span class="price fw-bold">Ksh: {{ booking.final_price }}</span>
                 {% if booking.coupon_code %}
-                <span class="badge bg-success ms-2">{{ booking.coupon_code }}</span>
+                <span class="coupon-badge badge bg-success ms-2">{{ booking.coupon_code }}</span>
                 {% endif %}
             </div>
-            <a href="{% url 'bookings:booking_confirmation' booking.pk %}" class="btn btn-sm btn-outline-primary">
-                View Details
+            <a href="{% url 'bookings:booking_confirmation' booking.pk %}" class="view-details-btn btn btn-sm btn-outline-primary">
+                <span>View Details</span>
+                <i class="fas fa-chevron-right"></i>
             </a>
         </div>
     </div>
 </div>
+
+<style>
+    .booking-card {
+        border-radius: 10px;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .booking-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12) !important;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        transition: color 0.3s ease;
+    }
+    
+    .booking-card:hover .card-title {
+        color: #0d6efd;
+    }
+    
+    .booking-date {
+        transition: all 0.3s ease;
+    }
+    
+    .booking-card:hover .booking-date {
+        transform: translateX(3px);
+    }
+    
+    .status-badge {
+        font-weight: 500;
+        padding: 0.35em 0.65em;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+        }
+        70% {
+            box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
+    
+    .price {
+        color: #2c3e50;
+        transition: all 0.3s ease;
+    }
+    
+    .booking-card:hover .price {
+        color: #0d6efd;
+        transform: scale(1.02);
+    }
+    
+    .coupon-badge {
+        transition: all 0.3s ease;
+    }
+    
+    .booking-card:hover .coupon-badge {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .view-details-btn {
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.4s ease;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .view-details-btn i {
+        margin-left: 4px;
+        transform: translateX(-5px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+    
+    .view-details-btn:hover {
+        background-color: #0d6efd !important;
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+    }
+    
+    .view-details-btn:hover i {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .view-details-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+    
+    .view-details-btn:hover::after {
+        left: 100%;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS for scroll animations
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    }
+
+    // Add click effect to booking cards
+    const bookingCards = document.querySelectorAll('.booking-card');
+    
+    bookingCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Only trigger if not clicking on the View Details button
+            if (!e.target.closest('.view-details-btn')) {
+                window.location.href = "{% url 'bookings:booking_confirmation' booking.pk %}";
+            }
+        });
+        
+        // Add hover sound effect (optional)
+        card.addEventListener('mouseenter', function() {
+            const sound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-hover-click-notification-259.mp3');
+            sound.volume = 0.2;
+            sound.play().catch(e => console.log('Audio play failed:', e));
+        });
+    });
+});
+</script>
+
+{% comment %}
+    Enhanced booking card features:
+    1. Smooth hover effects with subtle lift and shadow
+    2. Pulsing status badge animation
+    3. Animated "View Details" button with arrow icon transition
+    4. Interactive price display with hover effect
+    5. Clickable entire card (redirects to details)
+    6. Improved typography with hover color changes
+    7. Shimmer effect on button hover
+    8. Optional hover sound effect
+    9. Entrance animation on scroll (requires AOS)
+    10. Better spacing and rounded corners
+{% endcomment %}
