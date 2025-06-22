@@ -6,6 +6,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import Photo, PhotoCategory, Service, Tag
 from .forms import ContactForm
+from django.contrib.auth.decorators import login_required
+
 
 class HomeView(TemplateView):
     template_name = 'studio/home.html'

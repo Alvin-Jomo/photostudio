@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from studio.models import Service
+from django.conf import settings
 
 class Booking(models.Model):
     STATUS_CHOICES = [
@@ -11,7 +12,7 @@ class Booking(models.Model):
         ('cancelled', 'Cancelled'),
     ]
     
-    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='bookings')
     booking_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)

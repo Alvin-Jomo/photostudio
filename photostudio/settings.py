@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'imagekit',
     'django_extensions',
     'django_ckeditor_5',
+    'userauths',
 ]
 
 MIDDLEWARE = [
@@ -33,7 +34,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -144,3 +145,9 @@ EMAIL_HOST_PASSWORD = os.getenv('dubuzjtlcjlnrkvp')  # Set in environment
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
 CONTACT_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
 ADMIN_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
+
+LOGIN_URL = "userauths:sign-in"
+LOGIN_REDIRECT_URL = "userauths:sign-in"
+LOGOUT_REDIRECT_URL = "userauths:sign-in"
+
+AUTH_USER_MODEL = 'userauths.User'

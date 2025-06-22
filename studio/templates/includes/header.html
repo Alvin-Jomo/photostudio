@@ -33,14 +33,14 @@
                     <a href="{% url 'bookings:user_bookings' %}" class="btn btn-outline-primary me-2 hover-grow">
                         <i class="far fa-calendar-alt me-1"></i> My Bookings
                     </a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary hover-grow">
+                    <a href="{% url 'userauths:profile-edit' %}" class="btn btn-outline-secondary hover-grow">
                         <i class="fas fa-sign-out-alt me-1"></i> Logout
                     </a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary me-2 hover-grow">
+                    <a href="{% url 'userauths:sign-up' %}" class="btn btn-outline-primary me-2 hover-grow">
                         <i class="fas fa-sign-in-alt me-1"></i> Login
                     </a>
-                    <a href="{% url 'register' %}" class="btn btn-primary pulse-button">
+                    <a href="{% url 'userauths:sign-up' %}" class="btn btn-primary pulse-button">
                         <i class="fas fa-user-plus me-1"></i> Register
                     </a>
                 {% endif %}

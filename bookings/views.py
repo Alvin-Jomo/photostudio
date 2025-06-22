@@ -10,11 +10,15 @@ from django.utils import timezone
 from .models import Booking, Coupon
 from studio.models import Service
 from .forms import BookingForm
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def select_service(request):
     """View to select a service before booking"""
     services = Service.objects.filter(available=True)
     return render(request, 'bookings/select_service.html', {'services': services})
+
 
 class CreateBookingView(LoginRequiredMixin, CreateView):
     model = Booking
@@ -147,6 +151,7 @@ def validate_coupon(request):
             'valid': False,
             'message': 'Invalid coupon code or service'
         })
+
 
 class UserBookingsView(LoginRequiredMixin, ListView):
     model = Booking
