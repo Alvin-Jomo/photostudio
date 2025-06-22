@@ -63,64 +63,40 @@ class AboutView(TemplateView):
 
 class ContactView(TemplateView):
     template_name = 'studio/contact.html'
-
+    
     def get(self, request, *args, **kwargs):
         form = ContactForm()
         return render(request, self.template_name, {'form': form})
-
+    
     def post(self, request, *args, **kwargs):
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Process the form (e.g., send email)
-            self.send_contact_email(form.cleaned_data)
-            messages.success(request, "Your message has been sent!")
-            return redirect('studio:contact')  # Redirect to avoid resubmission
-        return render(request, self.template_name, {'form': form})
-
-    def send_contact_email(self, cleaned_data):
-        subject = f"New Contact Form: {cleaned_data['subject']}"
-        message = f"""
-        From: {cleaned_data['name']} <{cleaned_data['email']}>
-
-        Message:
-        {cleaned_data['message']}
-        """
-        send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.CONTACT_EMAIL],
-            fail_silently=False,
-        )
-    template_name = 'studio/contact.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.method == 'POST':
-            form = ContactForm(self.request.POST)
-            if form.is_valid():
+            try:
                 self.send_contact_email(form.cleaned_data)
-                messages.success(self.request, 'Your message has been sent!')
+                messages.success(request, "Your message has been sent successfully!")
                 return redirect('studio:contact')
-        else:
-            form = ContactForm()
-        context['form'] = form
-        return context
+            except Exception as e:
+                messages.error(request, f"Failed to send message. Error: {str(e)}")
+                return render(request, self.template_name, {'form': form})
+        
+        return render(request, self.template_name, {'form': form})
     
     def send_contact_email(self, cleaned_data):
-        subject = f"New Contact Form Submission: {cleaned_data['subject']}"
+        subject = f"New Contact: {cleaned_data['subject']}"
         message = f"""
         From: {cleaned_data['name']} <{cleaned_data['email']}>
+        Subject: {cleaned_data['subject']}
         
         Message:
         {cleaned_data['message']}
+        
+        You can reply directly to {cleaned_data['email']}
         """
+        
         send_mail(
-            subject,
-            message,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.CONTACT_EMAIL],
+            subject=subject,
+            message=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.CONTACT_EMAIL],
             fail_silently=False,
         )
-
-

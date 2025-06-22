@@ -13,22 +13,34 @@
                 </div>
                 
                 <div class="card-body p-4">
-                    <!-- Celebration Animation -->
+                    <!-- Status Icon Animation -->
                     <div class="text-center mb-4 position-relative">
-                        <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto animate__animated animate__bounceIn" 
-                             style="width: 100px; height: 100px; line-height: 100px; transition: all 0.3s ease;">
-                            <i class="fas fa-check fa-3x"></i>
-                        </div>
-                        <div class="confetti"></div>
-                        <h2 class="mt-3 animate__animated animate__fadeIn">Thank You!</h2>
-                        <p class="lead text-muted animate__animated animate__fadeIn animate__delay-1s">Your booking has been received</p>
+                        {% if booking.status == 'cancelled' %}
+                            <!-- Big X for cancelled bookings -->
+                            <div class="icon-box bg-danger bg-opacity-10 text-danger rounded-circle mx-auto animate__animated animate__bounceIn" 
+                                 style="width: 100px; height: 100px; line-height: 100px; transition: all 0.3s ease;">
+                                <i class="fas fa-times fa-3x"></i>
+                            </div>
+                            <h2 class="mt-3 animate__animated animate__fadeIn">Booking Cancelled</h2>
+                        {% else %}
+                            <!-- Checkmark for other statuses -->
+                            <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto animate__animated animate__bounceIn" 
+                                 style="width: 100px; height: 100px; line-height: 100px; transition: all 0.3s ease;">
+                                <i class="fas fa-check fa-3x"></i>
+                            </div>
+                            <div class="confetti"></div>
+                            <h2 class="mt-3 animate__animated animate__fadeIn">Thank You!</h2>
+                        {% endif %}
+                        <p class="lead text-muted animate__animated animate__fadeIn animate__delay-1s">Your booking status is <span style="color: brown">{{ booking.get_status_display }}</span></p>
                     </div>
                     
                     <!-- Booking Details Card with Hover Effect -->
                     <div class="booking-details animate__animated animate__fadeIn animate__delay-1s">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4>Booking Details</h4>
-                            <span class="badge bg-primary rounded-pill">Confirmed</span>
+                            <span class="badge bg-{% if booking.status == 'confirmed' %}success{% elif booking.status == 'pending' %}warning{% elif booking.status == 'completed' %}info{% else %}danger{% endif %} rounded-pill">
+                                {{ booking.get_status_display }}
+                            </span>
                         </div>
                         
                         <div class="table-responsive">
@@ -83,12 +95,17 @@
                             </div>
                             <div>
                                 <h5 class="alert-heading">What's Next?</h5>
-                                <p class="mb-0">We've sent a confirmation email to your registered address. Our team will review your booking and contact you within 24 hours to confirm your appointment.</p>
+                                {% if booking.status == 'cancelled' %}
+                                    <p class="mb-0">Your booking has been cancelled. If this was a mistake, please contact our support team immediately.</p>
+                                {% else %}
+                                    <p class="mb-0">We've sent a confirmation email to your registered address. Our team will review your booking and contact you within 24 hours to confirm your appointment.</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Social Sharing Buttons -->
+                    <!-- Social Sharing Buttons (only show for non-cancelled bookings) -->
+                    {% if booking.status != 'cancelled' %}
                     <div class="social-sharing mt-4 animate__animated animate__fadeIn animate__delay-2-5s text-center">
                         <p class="text-muted mb-2">Share your booking with friends!</p>
                         <a href="#" class="btn btn-sm btn-outline-primary me-2 share-btn" data-platform="facebook">
@@ -101,6 +118,7 @@
                             <i class="fab fa-instagram me-1"></i> Story
                         </a>
                     </div>
+                    {% endif %}
                     
                     <!-- CTA Buttons with Hover Effects -->
                     <div class="d-flex justify-content-between mt-5 animate__animated animate__fadeInUp animate__delay-3s">
@@ -118,6 +136,7 @@
 </div>
 
 <!-- Add to Calendar Button (Hidden by default, shows after delay) -->
+{% if booking.status != 'cancelled' %}
 <div class="container mt-4 text-center animate__animated animate__fadeIn animate__delay-4s" id="addToCalendar" style="display: none;">
     <div class="card border-0 shadow-sm" style="border-radius: 15px;">
         <div class="card-body py-3">
@@ -130,8 +149,10 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <!-- Recommended Services (Hidden by default, shows after delay) -->
+{% if booking.status != 'cancelled' %}
 <div class="container mt-4 animate__animated animate__fadeIn animate__delay-5s" id="recommendedServices" style="display: none;">
     <div class="card border-0 shadow-sm" style="border-radius: 15px;">
         <div class="card-body">
@@ -169,6 +190,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block extra_css %}
@@ -275,23 +297,25 @@
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
-    // Trigger confetti animation
+    // Trigger confetti animation only for non-cancelled bookings
     document.addEventListener('DOMContentLoaded', function() {
-        // Simple confetti effect
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-        
-        // Show additional sections after delays
-        setTimeout(function() {
-            document.getElementById('addToCalendar').style.display = 'block';
-        }, 3000);
-        
-        setTimeout(function() {
-            document.getElementById('recommendedServices').style.display = 'block';
-        }, 5000);
+        {% if booking.status != 'cancelled' %}
+            // Simple confetti effect
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            
+            // Show additional sections after delays
+            setTimeout(function() {
+                document.getElementById('addToCalendar').style.display = 'block';
+            }, 3000);
+            
+            setTimeout(function() {
+                document.getElementById('recommendedServices').style.display = 'block';
+            }, 5000);
+        {% endif %}
         
         // Social sharing buttons
         document.querySelectorAll('.share-btn').forEach(button => {

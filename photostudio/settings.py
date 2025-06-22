@@ -138,15 +138,16 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
+# Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('dubuzjtlcjlnrkvp')  # Set in environment
-DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
-CONTACT_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
-ADMIN_EMAIL = os.getenv('EMAIL_HOST_USER', 'alvotheboss@gmail.com')
+EMAIL_HOST_USER = 'alvotheboss@gmail.com'
+EMAIL_HOST_PASSWORD ='ncwxdyoqgnzbxjhj'  # Changed to correct environment variable name
+DEFAULT_FROM_EMAIL ='alvotheboss@gmail.com'
+CONTACT_EMAIL = 'alvotheboss@gmail.com'
+ADMIN_EMAIL = 'alvotheboss@gmail.com'
 
 LOGIN_URL = "userauths:sign-in"
 LOGIN_REDIRECT_URL = "userauths:sign-in"

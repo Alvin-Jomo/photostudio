@@ -12,7 +12,6 @@ from studio.models import Service
 from .forms import BookingForm
 from django.contrib.auth.decorators import login_required
 
-
 @login_required
 def select_service(request):
     """View to select a service before booking"""
@@ -172,9 +171,9 @@ class CancelBookingView(LoginRequiredMixin, DeleteView):
     
     def get_queryset(self):
         """Only allow users to cancel their own bookings"""
-        return Booking.objects.filter(client=self.request.user)
+        return super().get_queryset().filter(client=self.request.user)
     
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """Handle booking cancellation"""
         booking = self.get_object()
         
