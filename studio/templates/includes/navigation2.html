@@ -1,83 +1,21 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <!-- Brand/Logo - Far Left with Spin Animation -->
-        <a class="navbar-brand me-5" href="{% url 'studio:home' %}" style="margin-right: 5rem !important;">
+        <!-- Brand/Logo - Left -->
+        <a class="navbar-brand" href="{% url 'studio:home' %}">
             <i class="fas fa-camera me-2 camera-icon"></i>PhotoStudio
         </a>
-        
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="mainNav">
-            <!-- Centered Main Navigation -->
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item mx-2">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" 
-                       href="{% url 'studio:home' %}">
-                        Home
-                    </a>
-                </li>
-                
-                <!-- Portfolio Dropdown (Now shows on click) -->
-                <li class="nav-item dropdown mx-2">
-                    <a class="nav-link dropdown-toggle {% if 'portfolio' in request.resolver_match.url_name %}active{% endif %}" 
-                       href="#" id="portfolioDropdown" role="button" 
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Portfolio
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="portfolioDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'studio:portfolio' %}">
-                                All Photos
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        {% for category in PhotoCategory.objects.all|slice:":5" %}
-                        <li>
-                            <a class="dropdown-item" href="{{ category.get_absolute_url }}">
-                                {{ category.name }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                        {% if PhotoCategory.objects.count > 5 %}
-                        <li>
-                            <a class="dropdown-item text-primary" href="{% url 'studio:portfolio' %}">
-                                View All Categories...
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </li>
-                
-                <li class="nav-item mx-2">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" 
-                       href="{% url 'studio:services' %}">
-                        Services
-                    </a>
-                </li>
-                
-                <li class="nav-item mx-2">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
-                       href="{% url 'studio:about' %}">
-                        About
-                    </a>
-                </li>
-                
-                <li class="nav-item mx-2">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" 
-                       href="{% url 'studio:contact' %}">
-                        Contact
-                    </a>
-                </li>
-            </ul>
-            
             <!-- Right-aligned User Navigation -->
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-1"></i> 
+                        <i class="fas fa-user-circle me-1"></i>
                         {{ user.get_short_name|default:user.username }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -86,32 +24,13 @@
                                 <i class="fas fa-calendar-alt me-2"></i>My Bookings
                             </a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fas fa-user me-2"></i>Profile
-                            </a>
-                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger" href="{% url 'userauths:sign-out' %}">
-                             <i class="fas fa-sign-out-alt me-2"></i>Logout
-                             </a>
-
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
                         </li>
                     </ul>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link position-relative" href="{% url 'bookings:user_bookings' %}">
-                        <i class="fas fa-calendar-check"></i>
-                        {% with user.bookings.count as booking_count %}
-                        {% if booking_count > 0 %}
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ booking_count }}
-                        </span>
-                        {% endif %}
-                        {% endwith %}
-                    </a>
                 </li>
                 {% else %}
                 <li class="nav-item">
@@ -129,6 +48,7 @@
         </div>
     </div>
 </nav>
+
 
 <!-- Mobile Bottom Navigation -->
 <div class="d-lg-none fixed-bottom bg-dark text-white p-2 mobile-nav">

@@ -1,13 +1,15 @@
 from django.urls import path, reverse_lazy
 from userauths import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
+from django.conf import settings
 
 app_name = "userauths"
 
 urlpatterns = [
 
     # User registration and login views
-    path("sign-up/", views.register_view, name="sign-up"),
+    path("sign-up/", views.register_view, name="sign-up" ),
     path("sign-in/", views.login_view, name="sign-in"),
     path("sign-out/", views.logout_view, name="sign-out"),
 
@@ -34,4 +36,6 @@ urlpatterns = [
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(
         template_name="registration/password_reset_complete.html"
     ), name="password_reset_complete"),
+
+    path('logout/', LogoutView.as_view(next_page='userauths:sign-in'), name='logout'),
 ]

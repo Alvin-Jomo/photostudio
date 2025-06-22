@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 {% block content %}
 
@@ -264,17 +264,10 @@
                     </span>
                 </div>
                 <div class="form-group floating-label">
-                    {{ form.phone }}
-                    <!-- <label for="{{ form.phone.id_for_label }}">PHONE</label> -->
-                </div>
-                <div class="form-group floating-label">
-                    {{ form.location }}
-                    <!-- <label for="{{ form.location.id_for_label }}">LOCATION</label> -->
-                </div>
-                <div class="form-group floating-label">
-                    {{ form.manager }}
-                    <!-- <label for="{{ form.manager.id_for_label }}">Manager</label> -->
-                </div>
+                  {{ form.phone }}
+                <label for="{{ form.phone.id_for_label }}">Phone</label>
+                    </div>
+
 
                 <div class="form-group mb-30">
                     <button type="submit" class="btn">

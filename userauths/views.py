@@ -4,7 +4,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from userauths.models import Profile, User
 import re
-from django.core.mail import send_mail
 from django.conf import settings
 from .backends import ApprovedUserBackend
 from django.contrib.auth import get_user_model
@@ -16,7 +15,7 @@ def login_view(request):
     """
     if request.user.is_authenticated:
         messages.warning(request, "You are already logged in.")
-        return redirect("core:index")  # Redirect to home if already logged in
+        return redirect("studio:home")  # Redirect to home if already logged in
 
     if request.method == "POST":
         identifier = request.POST.get("identifier")
@@ -38,7 +37,7 @@ def login_view(request):
             if authenticated_user:
                 login(request, authenticated_user)
                 messages.success(request, "You are logged in.")
-                next_url = request.GET.get("next", 'core:index')  # Default to 'home' inst ead of 'index'
+                next_url = request.GET.get("next", 'studio:home')  # Default to 'home' inst ead of 'index'
                 return redirect(next_url)
             else:
                 if not user.is_active:
@@ -108,7 +107,7 @@ def profile_update(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Profile updated successfully.")
-            return redirect("core:dashboard")  # Redirect to dashboard after successful update
+            return redirect("studio:home")  # Redirect to dashboard after successful update
     else:
         form = ProfileForm(instance=profile)
 

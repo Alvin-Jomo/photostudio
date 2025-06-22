@@ -7,10 +7,13 @@ from django.conf import settings
 from .models import Photo, PhotoCategory, Service, Tag
 from .forms import ContactForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'studio/home.html'
+    login_url = 'userauths:sign-in'
+
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
