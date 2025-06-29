@@ -21,6 +21,8 @@ class Booking(models.Model):
     coupon_code = models.CharField(max_length=20, blank=True)
     final_price = models.DecimalField(max_digits=8, decimal_places=2)
     paid = models.BooleanField(default=False)
+    discount_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+
     
     class Meta:
         ordering = ['-booking_date']
@@ -33,7 +35,7 @@ class Booking(models.Model):
 
 class Coupon(models.Model):
     code = models.CharField(max_length=20, unique=True)
-    discount_percent = models.PositiveIntegerField()
+    discount_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)  # Changed field
     valid_from = models.DateTimeField()
     valid_to = models.DateTimeField()
     active = models.BooleanField(default=True)
@@ -41,7 +43,7 @@ class Coupon(models.Model):
     times_used = models.PositiveIntegerField(default=0)
     
     def __str__(self):
-        return self.code
+        return f"{self.code} (Ksh {self.discount_amount} off)"
     
     def is_valid(self):
         now = timezone.now()

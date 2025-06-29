@@ -22,7 +22,6 @@ class BookingAdmin(admin.ModelAdmin):
 
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
-    list_display = ('code', 'discount_percent', 'valid_from', 'valid_to', 'active', 'times_used')
+    list_display = ('code', 'discount_amount', 'valid_from', 'valid_to', 'active', 'times_used')
     list_filter = ('active',)
     search_fields = ('code',)
-    date_hierarchy = 'valid_from'

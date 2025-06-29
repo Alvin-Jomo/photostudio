@@ -4,8 +4,9 @@
 
 {% block content %}
 <!-- Contact Hero -->
-<section class="contact-hero bg-dark text-white py-5">
-    <div class="container py-5">
+<section class="contact-hero bg-dark text-white py-2 position-relative overflow-hidden">
+    <div class="hero-overlay"></div>
+    <div class="container py-5 position-relative">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">Contact Us</h1>
@@ -20,23 +21,25 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-5 mb-lg-0">
-                <h2 class="fw-bold mb-4">Send Us a Message</h2>
-                <form method="post" action="{% url 'studio:contact' %}" id="contactForm" class="needs-validation" novalidate>
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <div class="form-group mt-4">
-                        <button type="submit" class="btn btn-primary hover-scale">
-                            <span class="submit-text">Send Message</span>
-                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div id="formSuccess" class="alert alert-success mt-3 d-none">
-                        Your message has been sent successfully!
-                    </div>
-                    <div id="formError" class="alert alert-danger mt-3 d-none">
-                        There was an error sending your message. Please try again.
-                    </div>
-                </form>
+                <div class="form-container glow-card p-4 p-lg-5 rounded-4">
+                    <h2 class="fw-bold mb-4">Send Us a Message</h2>
+                    <form method="post" action="{% url 'studio:contact' %}" id="contactForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary hover-scale btn-glow">
+                                <span class="submit-text">Send Message</span>
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div id="formSuccess" class="alert alert-success mt-3 d-none">
+                            <i class="fas fa-check-circle me-2"></i> Your message has been sent successfully!
+                        </div>
+                        <div id="formError" class="alert alert-danger mt-3 d-none">
+                            <i class="fas fa-exclamation-circle me-2"></i> There was an error sending your message. Please try again.
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="col-lg-6">
                 <h2 class="fw-bold mb-4">Contact Information</h2>
@@ -48,7 +51,7 @@
                             </div>
                             <div>
                                 <h5 class="mb-1">Address</h5>
-                                <p class="text-muted mb-0">Embakasi, Nairobi, KENYA</p>
+                                <p class="text-muted mb-0">Located Along Kenya Builders Road Honey Suckle Phase 3 Opposite Sela Care Health Care</p>
                             </div>
                         </div>
                         <div class="d-flex mb-4 contact-item">
@@ -57,18 +60,18 @@
                             </div>
                             <div>
                                 <h5 class="mb-1">Phone</h5>
-                                <p class="text-muted mb-0"><a href="tel:+1234567890" class="text-reset">+254707249256</a></p>
+                                <p class="text-muted mb-0"><a href="https://wa.me/+254799620033" class="text-reset">+254799620033</a></p>
                             </div>
                         </div>
-                        <div class="d-flex contact-item">
-                            <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle me-4 hover-grow" align="center" style="width: 50px; height: 50px; line-height: 50px;">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div>
-                                <h5 class="mb-1">Email</h5>
-                                <p class="text-muted mb-0"><a href="mailto:info@photostudio.com" class="text-reset">info@photostudio.com</a></p>
-                            </div>
+                       <div class="d-flex contact-item">
+                         <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle me-4 hover-grow" align="center" style="width: 50px; height: 50px; line-height: 50px;">
+                          <i class="fas fa-envelope"></i>
+                             </div>
+                      <div>
+                          <h5 class="mb-1">Email</h5>
+                       <p class="text-muted mb-0"><a href="mailto:mivlensstudio@gmail.com" class="text-reset">mivlensstudio@gmail.com</a></p>
                         </div>
+                         </div>
                     </div>
                 </div>
                 
@@ -77,17 +80,9 @@
                         <h5 class="mb-3">Studio Hours</h5>
                         <ul class="list-unstyled">
                             <li class="d-flex justify-content-between py-2 border-bottom hover-highlight">
-                                <span class="text-muted">Monday - Friday</span>
+                                <span class="text-muted">Monday - Sunday</span>
                                 <span>8:00 AM - 6:00 PM</span>
                             </li>
-                            <li class="d-flex justify-content-between py-2 border-bottom hover-highlight">
-                                <span class="text-muted">Saturday - Sunday</span>
-                                <span>10:00 AM - 4:00 PM</span>
-                            </li>
-                            <!-- <li class="d-flex justify-content-between py-2 hover-highlight">
-                                <span class="text-muted">Sunday</span>
-                                <span>Closed</span>
-                            </li> -->
                         </ul>
                     </div>
                 </div>
@@ -99,24 +94,153 @@
 <!-- Map -->
 <section class="py-0 map-section">
     <div class="container-fluid p-0">
-        <div class="map-overlay" onclick="style.pointerEvents='none'"></div>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.193594543524!2d36.85433153071802!3d-1.3209516013276792!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f11e92f7c7e7f%3A0x1f54b11e2d8320ae!2sEmbakasi%2C%20Nairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1656622331672!5m2!1sen!2sus"
-        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" class="map-iframe"></iframe>
+        <div class="map-overlay" onclick="this.style.pointerEvents='none'"></div>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.154547089262!2d36.8851022!3d-1.316765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f13fb4058eabf%3A0x57b0c36ab99694b3!2sSELACAREHEALTHSERVICES!5e0!3m2!1sen!2ske!4v1720000000000!5m2!1sen!2ske" 
+            width="100%" 
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            class="map-iframe">
+        </iframe>
+    </div>
+
+    <!-- Directions Buttons -->
+    <div class="text-center my-4">
+        <p><strong>Get Directions from Your Location</strong></p>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=SELACAREHEALTHSERVICES,+Pipeline,+Quarry+Road,+Nairobi,+Kenya&travelmode=driving" 
+           target="_blank" class="btn btn-success m-1">🚗 Driving</a>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=SELACAREHEALTHSERVICES,+Pipeline,+Quarry+Road,+Nairobi,+Kenya&travelmode=walking" 
+           target="_blank" class="btn btn-secondary m-1">🚶 Walking</a>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=SELACAREHEALTHSERVICES,+Pipeline,+Quarry+Road,+Nairobi,+Kenya&travelmode=transit" 
+           target="_blank" class="btn btn-info m-1">🚌 Public Transport</a>
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=SELACAREHEALTHSERVICES,+Pipeline,+Quarry+Road,+Nairobi,+Kenya&travelmode=bicycling" 
+           target="_blank" class="btn btn-warning m-1">🚴 Cycling</a>
     </div>
 </section>
+
+
+
 {% endblock %}
 
 {% block extra_js %}
 <!-- Add Animate.css for animations -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
 <style>
     /* Custom CSS for transitions and effects */
+    :root {
+        --primary-color: #6a11cb;
+        --secondary-color: #2b59a8;
+        --accent-color: #ff4d4d;
+        --glow-color: rgba(106, 17, 203, 0.4);
+    }
+    
+    /* Gradient background for hero section */
+    .contact-hero {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        z-index: 0;
+    }
+    
+    .contact-hero .container {
+        z-index: 1;
+    }
+    
+    /* Glowing form container */
+    .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        transition: all 0.3s ease;
+    }
+    
+    .glow-card {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .glow-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+            to bottom right,
+            rgba(106, 17, 203, 0),
+            rgba(106, 17, 203, 0),
+            rgba(106, 17, 203, 0.3),
+            rgba(106, 17, 203, 0)
+        );
+        transform: rotate(30deg);
+        animation: glowAnimation 6s linear infinite;
+        z-index: -1;
+    }
+    
+    @keyframes glowAnimation {
+        0% { transform: rotate(30deg) translate(-10%, -10%); }
+        50% { transform: rotate(30deg) translate(10%, 10%); }
+        100% { transform: rotate(30deg) translate(-10%, -10%); }
+    }
+    
+    /* Button glow effect */
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    .btn-glow::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color), var(--secondary-color), var(--primary-color));
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        opacity: 0;
+        transition: 0.5s;
+    }
+    
+    .btn-glow:hover::before {
+        opacity: 1;
+        animation: btnGlow 8s linear infinite;
+    }
+    
+    @keyframes btnGlow {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
+    }
+    
+    /* Hover effects */
     .hover-scale {
-        transition: transform 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .hover-scale:hover {
         transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
     
     .hover-lift {
@@ -124,7 +248,7 @@
     }
     .hover-lift:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important;
     }
     
     .hover-grow {
@@ -145,6 +269,11 @@
     
     .contact-item {
         transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .contact-item:hover {
+        transform: translateX(5px);
     }
     
     /* Map overlay to prevent accidental dragging */
@@ -159,6 +288,12 @@
         height: 100%;
         z-index: 1;
         cursor: pointer;
+        background: rgba(0,0,0,0.01);
+        transition: all 0.3s ease;
+    }
+    
+    .map-overlay:hover {
+        background: rgba(0,0,0,0.03);
     }
     
     /* Animation for form section */
@@ -192,6 +327,28 @@
         background-position: right calc(0.375em + 0.1875rem) center;
         background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
     }
+    
+    /* Floating animation for hero text */
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    /* Pulse animation for important elements */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .pulse {
+        animation: pulse 4s ease infinite;
+    }
 </style>
 
 <script>
@@ -203,6 +360,14 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
+                    
+                    // Add pulse animation to form container
+                    const formContainer = document.querySelector('.form-container');
+                    if (formContainer) {
+                        setTimeout(() => {
+                            formContainer.classList.add('pulse');
+                        }, 500);
+                    }
                 }
             });
         }, {
@@ -211,6 +376,12 @@
         
         contactSection.classList.add('fade-in-section');
         observer.observe(contactSection);
+        
+        // Add floating animation to hero text
+        const heroText = document.querySelector('.contact-hero h1');
+        if (heroText) {
+            heroText.classList.add('floating');
+        }
         
         // Form submission handling
         const contactForm = document.getElementById('contactForm');
@@ -229,6 +400,9 @@
                     spinner.classList.remove('d-none');
                     submitBtn.disabled = true;
                     
+                    // Add glow effect during submission
+                    submitBtn.classList.add('btn-glow-active');
+                    
                     // In a real implementation, you would handle the form submission with AJAX
                     // This is just a simulation
                     setTimeout(function() {
@@ -237,14 +411,17 @@
                         submitText.textContent = 'Message Sent!';
                         
                         // Show success message
-                        document.getElementById('formSuccess').classList.remove('d-none');
+                        const successMsg = document.getElementById('formSuccess');
+                        successMsg.classList.remove('d-none');
+                        successMsg.classList.add('animate__animated', 'animate__fadeIn');
                         
                         // Reset form after 3 seconds
                         setTimeout(function() {
                             contactForm.reset();
                             submitText.textContent = 'Send Message';
                             submitBtn.disabled = false;
-                            document.getElementById('formSuccess').classList.add('d-none');
+                            successMsg.classList.add('d-none');
+                            successMsg.classList.remove('animate__animated', 'animate__fadeIn');
                         }, 3000);
                     }, 1500);
                 }
@@ -257,7 +434,10 @@
         const mapOverlay = document.querySelector('.map-overlay');
         if (mapOverlay) {
             mapOverlay.addEventListener('click', function() {
-                this.style.display = 'none';
+                this.style.opacity = '0';
+                setTimeout(() => {
+                    this.style.display = 'none';
+                }, 300);
                 document.querySelector('.map-iframe').style.pointerEvents = 'auto';
             });
         }
@@ -265,7 +445,10 @@
         // Add click animation to contact items
         const contactItems = document.querySelectorAll('.contact-item');
         contactItems.forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function(e) {
+                // Don't animate if clicking on a link
+                if (e.target.tagName === 'A') return;
+                
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
                     this.style.transform = '';
@@ -273,19 +456,15 @@
             });
         });
         
-        // Copy email to clipboard
-        const emailElement = document.querySelector('a[href^="mailto"]');
-        if (emailElement) {
-            emailElement.addEventListener('click', function(e) {
-                e.preventDefault();
-                const email = this.getAttribute('href').replace('mailto:', '');
-                navigator.clipboard.writeText(email).then(() => {
-                    const originalText = this.textContent;
-                    this.textContent = 'Copied to clipboard!';
-                    setTimeout(() => {
-                        this.textContent = originalText;
-                    }, 2000);
-                });
+        // Add hover effect to form container
+        const formContainer = document.querySelector('.form-container');
+        if (formContainer) {
+            formContainer.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 15px 30px rgba(106, 17, 203, 0.2)';
+            });
+            
+            formContainer.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '0 8px 32px 0 rgba(31, 38, 135, 0.15)';
             });
         }
     });

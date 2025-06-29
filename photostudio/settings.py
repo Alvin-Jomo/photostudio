@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from django.contrib import messages
 from django.contrib.messages import constants as messages
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,8 +21,6 @@ INSTALLED_APPS = [
     'bookings',
     'crispy_forms',
     'crispy_bootstrap5',
-    'imagekit',
-    'django_extensions',
     'django_ckeditor_5',
     'userauths',
 ]

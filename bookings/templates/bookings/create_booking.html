@@ -1,37 +1,103 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
 <div class="container py-5 animate__animated animate__fadeIn">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow-lg border-0 animate__animated animate__zoomIn" style="border-radius: 12px; overflow: hidden;">
+            <div class="card shadow-lg border-0 animate__animated animate__zoomIn" style="border-radius: 20px; overflow: hidden;">
                 <div class="card-header text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <h3 class="mb-0"><i class="far fa-calendar-check me-2"></i>Book {{ service.name }}</h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0"><i class="far fa-calendar-check me-2"></i>Book {{ service.name }}</h3>
+                        <span class="badge bg-light text-dark fs-6"><i class="fas fa-clock me-1"></i> {{ service.duration }} mins</span>
+                    </div>
                 </div>
                 <div class="card-body p-4">
+                    <div class="progress mb-4" style="height: 6px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%; background-color: #764ba2;"></div>
+                    </div>
+                    
                     <form method="POST" id="bookingForm">
                         {% csrf_token %}
                         <div class="animate__animated animate__fadeIn animate__delay-1s">
-                            {{ form|crispy }}
+                            {% for field in form %}
+                                <div class="form-group mb-4">
+                                    {% if field.name == 'booking_date' %}
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas fa-calendar-day me-2"></i>{{ field.label }}
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                            {{ field|as_crispy_field }}
+                                        </div>
+                                           {% elif field.name == 'client_name' %}
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas fa-user me-2"></i>{{ field.label }}
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                            {{ field|as_crispy_field }}
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">Your full name as it appears on ID</small>
+                                    {% elif field.name == 'client_email' %}
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas fa-envelope me-2"></i>{{ field.label }}
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-at"></i></span>
+                                            {{ field|as_crispy_field }}
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">We'll send confirmation to this email</small>
+                                    {% elif field.name == 'client_phone' %}
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas fa-phone me-2"></i>{{ field.label }}
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                            {{ field|as_crispy_field }}
+                                        </div>
+                                        <small class="text-muted mt-1 d-block">We may contact you about your booking</small>
+                                    {% elif field.name == 'special_requests' %}
+                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                            <i class="fas fa-edit me-2"></i>{{ field.label }}
+                                        </label>
+                                        {{ field|as_crispy_field }}
+                                        <small class="text-muted mt-1 d-block">Any special requirements or notes</small>
+                                    {% else %}
+                                        {{ field|as_crispy_field }}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
                         </div>
                         
                         <div class="row mt-3 animate__animated animate__fadeIn animate__delay-1-2s">
                             <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label class="form-label"><i class="fas fa-tag me-2"></i>Base Price</label>
-                                    <input type="text" class="form-control form-control-lg" value="Ksh: {{ service.base_price }}" readonly style="background-color: #f8f9fa;">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title"><i class="fas fa-tag me-2"></i>Base Price</h5>
+                                        <h3 class="text-primary">Ksh: {{ service.base_price }}</h3>
+                                        <p class="text-muted small mb-0">Standard service rate</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                    <label class="form-label"><i class="fas fa-receipt me-2"></i>Final Price</label>
-                                    <input type="text" class="form-control form-control-lg fw-bold" id="finalPrice" value="Ksh: {{ service.base_price }}" readonly style="color: #764ba2; background-color: #f8f9fa;">
+                                <div class="card h-100 border-0 shadow-sm" style="background-color: #f8f9fa;">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title"><i class="fas fa-receipt me-2"></i>Final Price</h5>
+                                        <h3 class="text-success fw-bold" id="finalPrice">Ksh: {{ service.base_price }}</h3>
+                                        <p class="text-muted small mb-0">Inclusive of all charges</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="d-grid gap-3 mt-4 animate__animated animate__fadeIn animate__delay-1-5s">
+                        <div class="alert alert-info mt-4 animate__animated animate__fadeIn animate__delay-1-5s">
+                            <i class="fas fa-info-circle me-2"></i> 
+                            Your booking will be confirmed once payment is processed. You'll receive a confirmation email with all details.
+                        </div>
+                        
+                        <div class="d-grid gap-3 mt-4 animate__animated animate__fadeIn animate__delay-1-7s">
                             <button type="submit" class="btn btn-primary btn-lg py-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
                                 <i class="fas fa-check-circle me-2"></i>Confirm Booking
                             </button>
@@ -40,6 +106,9 @@
                             </a>
                         </div>
                     </form>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a href="https://wa.me/+254799620033" class="mb-0"><i class="fas fa-headset me-2"></i> Need help? Call us at <strong>+254 799620033</strong></a>
                 </div>
             </div>
         </div>
@@ -51,67 +120,118 @@
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
+    body {
+        background-image: url("{% static 'images/y.png' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+    }
+    
     /* Form input styling */
     .form-control {
-        border-radius: 8px;
-        padding: 12px 15px;
+        border-radius: 12px;
+        padding: 14px 18px;
         transition: all 0.3s ease;
-        border: 1px solid #e0e0e0;
+        border: 2px solid #e0e0e0;
+        font-size: 1rem;
     }
     
     .form-control:focus {
         border-color: #764ba2;
         box-shadow: 0 0 0 0.25rem rgba(118, 75, 162, 0.25);
+        transform: scale(1.01);
     }
     
     /* Card styling */
     .card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        overflow: hidden;
     }
     
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
     }
     
     /* Button styling */
     .btn {
-        border-radius: 8px;
+        border-radius: 12px;
         transition: all 0.3s ease;
-        font-weight: 500;
+        font-weight: 600;
+        letter-spacing: 0.5px;
     }
     
     .btn:hover {
-        transform: translateY(-2px);
+        transform: translateY(-3px) scale(1.02);
     }
     
     .btn-primary:hover {
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
     }
     
     .btn-outline-secondary:hover {
-        box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
     }
     
     /* Form labels */
     .form-label {
-        font-weight: 500;
+        font-weight: 600;
         color: #495057;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
+        font-size: 1.05rem;
     }
     
     /* Crispy forms adjustments */
     .form-group {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.75rem;
+    }
+    
+    /* Input group styling */
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+        border-radius: 12px 0 0 12px !important;
+    }
+    
+    /* Price cards */
+    .card-title {
+        font-size: 1.1rem;
+        color: #6c757d;
+    }
+    
+    /* Floating animation */
+    @keyframes floating {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .floating {
+        animation: floating 3s ease-in-out infinite;
+    }
+    
+    /* Pulse animation for important elements */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+    
+    .pulse-once {
+        animation: pulse 1.5s ease-in-out;
     }
 </style>
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize date picker with animation
+    // Initialize date picker with enhanced options
     const datePicker = document.getElementById('id_booking_date');
     
     if (datePicker) {
@@ -119,16 +239,33 @@ document.addEventListener('DOMContentLoaded', function() {
             enableTime: true,
             dateFormat: "Y-m-d H:i",
             minDate: "today",
+            minTime: "08:00",
+            maxTime: "20:00",
             disable: [
                 function(date) {
                     return (date.getDay() === 0); // Disable Sundays
+                },
+                function(date) {
+                    // Disable past dates
+                    return date < new Date().setHours(0, 0, 0, 0);
                 }
             ],
             onReady: function() {
                 datePicker.classList.add('animate__animated', 'animate__fadeIn');
+            },
+            onChange: function() {
+                // Add visual feedback when date is selected
+                datePicker.classList.add('pulse-once');
+                setTimeout(() => {
+                    datePicker.classList.remove('pulse-once');
+                }, 1500);
             }
         });
     }
+    
+    // Add floating animation to the main card
+    const mainCard = document.querySelector('.card');
+    mainCard.classList.add('floating');
     
     // Add animation to form elements when they come into view
     const animatedElements = document.querySelectorAll('.animate__animated');
@@ -137,13 +274,83 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
+                if (entry.target.classList.contains('animate__zoomIn')) {
+                    entry.target.style.transform = 'scale(1)';
+                }
             }
         });
     }, { threshold: 0.1 });
     
     animatedElements.forEach(el => {
         el.style.opacity = '0';
+        if (el.classList.contains('animate__zoomIn')) {
+            el.style.transform = 'scale(0.95)';
+        }
         observer.observe(el);
+    });
+    
+    // Add input focus effects
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('shadow-sm');
+            this.parentElement.querySelector('.input-group-text').style.backgroundColor = '#e9ecef';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.parentElement.classList.remove('shadow-sm');
+            this.parentElement.querySelector('.input-group-text').style.backgroundColor = '#f8f9fa';
+        });
+    });
+    
+    // Add placeholder text if not already set
+    const nameInput = document.getElementById('id_client_name');
+    if (nameInput && !nameInput.placeholder) {
+        nameInput.placeholder = "Enter your full name";
+    }
+    
+    const emailInput = document.getElementById('id_client_email');
+    if (emailInput && !emailInput.placeholder) {
+        emailInput.placeholder = "example@domain.com";
+    }
+    
+    const phoneInput = document.getElementById('id_client_phone');
+    if (phoneInput && !phoneInput.placeholder) {
+        phoneInput.placeholder = "e.g. +254 700 123456";
+    }
+    
+    const requestsInput = document.getElementById('id_special_requests');
+    if (requestsInput && !requestsInput.placeholder) {
+        requestsInput.placeholder = "Any special requirements or notes about your booking...";
+    }
+});
+
+
+$(document).ready(function() {
+    $('#apply-coupon').click(function() {
+        const couponCode = $('#coupon_code').val();
+        const serviceId = {{ service.id }};
+        
+        if (!couponCode) {
+            $('#coupon-feedback').html('<div class="alert alert-warning">Please enter a coupon code</div>');
+            return;
+        }
+        
+        $.get('/bookings/validate-coupon/', {
+            code: couponCode,
+            service_id: serviceId
+        }, function(data) {
+            if (data.valid) {
+                $('#coupon-feedback').html('<div class="alert alert-success">' + data.message + '</div>');
+                $('#discount-display').show();
+                $('#discount-amount').text(data.discount_amount);
+                $('#final-price').text('Ksh ' + data.discounted_price);
+            } else {
+                $('#coupon-feedback').html('<div class="alert alert-danger">' + data.message + '</div>');
+                $('#discount-display').hide();
+                $('#final-price').text('Ksh {{ service.base_price }}');
+            }
+        });
     });
 });
 </script>

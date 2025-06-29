@@ -1,55 +1,237 @@
-<footer class="bg-dark text-white py-5">
+<footer class="bg-black text-white pt-5 pb-4">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="text-primary">PhotoStudio</h5>
-                <p class="text-muted">Capturing your precious moments with professional photography services.</p>
-                <div class="social-icons">
-                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-white"><i class="fab fa-pinterest"></i></a>
+        <div class="row g-4">
+            <!-- Studio Information -->
+            <div class="col-lg-2 col-md-6 mb-4" style="border: 2px solid white; border-radius: 5px; padding-top: 15px;">
+                <div class="footer-logo">
+                    <h5 class="text-primary mb-3 fw-bold" align="center"><i class="fas fa-camera me-2"></i>PhotoStudio</h5>
+                    <p class="text-gray-300 mb-4">Capturing your precious moments with professional photography services And offer quality cyber services at affordable prices</p>
+                    <div class="social-icons" align="center">
+                        <a href="mailto:mivlensstudio@gmail.com" class="text-gray-300 me-3 hover-primary"><i class="fas fa-envelope"></i></a>
+                        <a href="https://wa.me/+254799620033" class="text-gray-300 me-3 hover-primary"><i class="fab fa-whatsapp"></i></a>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-2 mb-4 mb-md-0">
-                <h5>Quick Links</h5>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-5 mb-4">
+                <h5 class="text-white mb-4 fw-bold position-relative pb-2">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{% url 'studio:home' %}" class="text-muted">Home</a></li>
-                    <li><a href="{% url 'studio:portfolio' %}" class="text-muted">Portfolio</a></li>
-                    <li><a href="{% url 'studio:services' %}" class="text-muted">Services</a></li>
-                    <li><a href="{% url 'studio:about' %}" class="text-muted">About</a></li>
-                    <li><a href="{% url 'studio:contact' %}" class="text-muted">Contact</a></li>
+                    <li class="mb-2"><a href="{% url 'studio:home' %}" class="text-gray-300 footer-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'studio:portfolio' %}" class="text-gray-300 footer-link">Portfolio</a></li>
+                    <li class="mb-2"><a href="{% url 'studio:services' %}" class="text-gray-300 footer-link">Services</a></li>
+                    <li class="mb-2"><a href="{% url 'studio:about' %}" class="text-gray-300 footer-link">About</a></li>
+                    <li><a href="{% url 'studio:contact' %}" class="text-gray-300 footer-link">Contact</a></li>
                 </ul>
             </div>
-            <div class="col-md-3 mb-4 mb-md-0">
-                <h5>Services</h5>
-                <ul class="list-unstyled">
-                    {% for service in Service.objects.all|slice:":5" %}
-                    <li><a href="{% url 'studio:services' %}" class="text-muted">{{ service.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-md-3">
-                <h5>Contact Info</h5>
-                <address class="text-muted">
-                    GEOLYO APARTMENTS KWARE<br>
-                    MIVLENS PHOTOSTUDIO<br>
-                    <i class="fas fa-phone me-2"></i> (254) 707-249256<br>
-                    <i class="fas fa-envelope me-2"></i> alvotheboss@gmail.com
+
+            <!-- Services -->
+           <div class="col-lg-2 col-md-6 mb-4">
+    <h5 class="text-white mb-4 fw-bold position-relative pb-2">Services</h5>
+    <ul class="list-unstyled">
+        {% for service in Service.objects.all|slice:":5" %}
+        <li class="mb-2"><a href="{% url 'studio:services' %}" class="text-gray-300 footer-link">{{ service.name }}</a></li>
+        {% endfor %}
+        <li class="mt-3">
+            <a href="{% url 'studio:services' %}" class="btn btn-outline-primary rounded-pill px-3 py-1 d-inline-flex align-items-center">
+                View All
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right ms-1" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<style>
+    /* Custom button styles */
+    .btn-outline-primary {
+        border-color: #3b82f6;
+        color: #3b82f6;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #a6c092;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    .btn-outline-primary:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+    
+    .bi-arrow-right {
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover .bi-arrow-right {
+        transform: translateX(2px);
+    }
+</style>
+
+<!-- Studio Contact -->
+<div class="col-lg-3 col-md-6 mb-4">
+     <h5 class="text-white mb-4 fw-bold position-relative pb-2">Studio Info</h5>
+          <address class="text-gray-300">
+             <div class="d-flex mb-3">
+                        <i class="fas fa-map-marker-alt text-primary mt-1 me-3"></i>
+                        <span>GEOLYO APARTMENTS KWARE<br>MIVLENS PHOTOSTUDIO</span>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <i class="fas fa-phone text-primary me-3"></i>
+                        <span>(254) 799620033</span>
+                    </div>
+                    <div class="d-flex">
+                        <i class="fas fa-envelope text-primary me-3"></i>
+                        <span>alvotheboss@gmail.com</span>
+                    </div>
                 </address>
             </div>
+
+            <!-- Developer Contact -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-white mb-4 fw-bold position-relative pb-2">Developer</h5>
+                <div class="developer-contact bg-gray-900 p-3 rounded">
+                    <p class="text-gray-300 small mb-3">Need website help? Contact me:</p>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-code text-primary me-3"></i>
+                        <span class="text-gray-300">Web Developer</span>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <i class="fas fa-envelope text-primary me-3"></i>
+                        <a href="mailto:alvotheboss@gmail.com" class="text-gray-300 footer-link">alvotheboss@gmail.com</a>
+                    </div>
+                    <div class="d-flex">
+                        <i class="fab fa-whatsapp text-primary me-3"></i>
+                        <a href="https://wa.me/+254707249256" target="_blank" class="text-gray-300 footer-link">+254707249256</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <hr class="my-4 bg-secondary">
-        <div class="row">
-            <div class="col-md-6 text-center text-md-start">
-                <p class="small text-muted mb-0">&copy; {% now "Y" %} PhotoStudio. All rights reserved.</p>
+
+        <hr class="my-4 border-gray-800">
+
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="small text-gray-500 mb-0">&copy; {% now "Y" %} PhotoStudio. All rights reserved.</p>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <p class="small text-muted mb-0">
-                    <a href="#" class="text-muted">Privacy Policy</a> | 
-                    <a href="#" class="text-muted">Terms of Service</a>
+                <p class="small text-gray-500 mb-0">
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors">Privacy Policy</a> | 
+                    <a href="#" class="text-gray-500 hover:text-white transition-colors">Terms of Service</a>
                 </p>
             </div>
         </div>
     </div>
 </footer>
+
+<style>
+    /* Custom Styles */
+    .bg-black {
+        background-color: #000;
+    }
+    
+    .bg-gray-900 {
+        background-color: #111;
+    }
+    
+    .text-gray-300 {
+        color: #d1d5db;
+    }
+    
+    .text-gray-500 {
+        color: #6b7280;
+    }
+    
+    .border-gray-800 {
+        border-color: #1f2937;
+    }
+    
+    footer {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #10b981, #3b82f6);
+        background-size: 200% 200%;
+        animation: gradientBG 6s ease infinite;
+    }
+    
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    h5.fw-bold.position-relative.pb-2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: #3b82f6;
+    }
+    
+    .footer-link {
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .footer-link:hover {
+        color: #81d35b !important;
+        padding-left: 5px;
+    }
+    
+    .hover-primary:hover {
+        color: #c4f63b !important;
+        transform: translateY(-2px);
+    }
+    
+    .social-icons a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(199, 171, 171, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+        background: #3b82f6;
+        transform: translateY(-2px);
+    }
+    
+    .developer-contact {
+        border-left: 3px solid #3b82f6;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .developer-contact:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 6px rgba(131, 126, 126, 0.1);
+    }
+    
+    .transition-colors {
+        transition: color 0.2s ease;
+    }
+    
+    .hover\:text-white:hover {
+        color: white !important;
+    }
+</style>

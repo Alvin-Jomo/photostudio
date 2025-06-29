@@ -57,15 +57,17 @@ class CreateBookingView(LoginRequiredMixin, CreateView):
         return redirect('bookings:booking_confirmation', pk=booking.pk)
     
     def calculate_final_price(self, booking):
-        """Calculate final price with coupon if applicable"""
+        """Calculate final price with coupon if applicable (fixed amount version)"""
         base_price = booking.service.base_price
         if booking.coupon_code:
             try:
                 coupon = Coupon.objects.get(code=booking.coupon_code, active=True)
                 if coupon.is_valid():
+                    # Apply fixed amount discount
+                    discounted_price = max(float(base_price) - float(coupon.discount_amount), 0)  # Ensure price doesn't go negative
                     coupon.times_used += 1
                     coupon.save()
-                    return base_price * (1 - coupon.discount_percent/100)
+                    return discounted_price
             except Coupon.DoesNotExist:
                 pass
         return base_price

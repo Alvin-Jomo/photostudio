@@ -1,91 +1,134 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% load static %}
+
+{% block head %}
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+{% endblock %}
+
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section bg-dark text-white py-5 position-relative overflow-hidden">
-    <div class="hero-overlay"></div>
-    <div class="container py-5 position-relative">
+<!-- Animated Hero Section -->
+<section class="hero-section text-white">
+    <div class="hero-bg"></div>
+    <div class="particles-js" id="particles-js"></div>
+    <div class="container py-3">
         <div class="row align-items-center">
-            <div class="col-lg-6" data-aos="fade-right">
-                <h1 class="display-4 fw-bold mb-4 hero-title">Professional Photography Studio</h1>
-                <p class="lead mb-4 hero-subtitle">Capturing your precious moments with creativity and passion.</p>
-                <div class="d-flex gap-3 hero-buttons">
-                    <a href="{% url 'studio:portfolio' %}" class="btn btn-primary btn-lg px-4 pulse-button">View Portfolio</a>
-                    <a href="{% url 'studio:services' %}" class="btn btn-outline-light btn-lg px-4 hover-grow">Our Services</a>
+            <div class="col-lg-6 order-lg-1 order-2" data-aos="fade-right">
+                <h1 class="hero-title mb-3 animate__animated animate__fadeInDown">
+                    MIVLENS <BR /><span>Professional</span> Photography Studio And Cyber
+                </h1>
+                <p class="lead mb-3 animate__animated animate__fadeIn animate__delay-1s">Capturing your precious moments with creativity and passion.</p>
+                <div class="d-flex flex-wrap gap-3 hero-buttons">
+                    <a href="{% url 'studio:portfolio' %}" class="btn btn-primary btn-lg px-4 animate__animated animate__fadeInUp animate__delay-1s">
+                        <span class="btn-text">View Portfolio</span>
+                        <i class="fas fa-arrow-right ms-2 btn-icon"></i>
+                    </a>
+                    <a href="{% url 'studio:services' %}" class="btn btn-outline-light btn-lg px-4 animate__animated animate__fadeInUp animate__delay-1s">
+                        <span class="btn-text">Our Services</span>
+                        <i class="fas fa-camera ms-2 btn-icon"></i>
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-6 d-none d-lg-block" data-aos="fade-left" data-aos-delay="200">
-                <div class="hero-image-container">
-                    <img src="{% static 'images/AS.png' %}" class="img-fluid rounded shadow hero-image" alt="Studio Hero Image">
+            <div class="col-lg-6 order-lg-2 order-1 mb-4 mb-lg-0" data-aos="fade-left" data-aos-delay="200">
+                <div class="hero-image-container floating">
+                    <img src="{% static 'images/y.png' %}" class="img-fluid rounded shadow-lg animate__animated animate__zoomIn" alt="Studio Hero Image">
                 </div>
             </div>
         </div>
     </div>
+    <div class="scroll-down animate__animated animate__fadeIn animate__infinite animate__slower">
+        <span></span>
+    </div>
 </section>
 
-<!-- Featured Photos -->
-<section class="py-5 bg-light">
+<!-- Featured Photos Section -->
+<section class="py-5 featured-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold section-title">Featured Work</h2>
-            <p class="text-muted section-subtitle">Some of our recent photography projects</p>
+            <h2 class="fw-bold section-title">
+                <span class="title-underline">Featured Work</span>
+            </h2>
+            <p class="text-muted">Some of our recent photography projects</p>
         </div>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row g-4">
             {% for photo in featured_photos %}
-            <div class="col" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
-                {% include 'studio/partials/_photo_card.html' %}
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div class="photo-card-wrapper">
+                    {% include 'studio/partials/_photo_card.html' %}
+                </div>
             </div>
             {% endfor %}
         </div>
         <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{% url 'studio:portfolio' %}" class="btn btn-outline-primary hover-grow">View Full Portfolio</a>
+            <a href="{% url 'studio:portfolio' %}" class="btn btn-outline-primary btn-hover-gradient">
+                <span>View Full Portfolio</span>
+                <i class="fas fa-images ms-2"></i>
+            </a>
         </div>
     </div>
 </section>
 
-<!-- Services Preview -->
-<section class="py-5">
+
+
+<!-- Services Section -->
+<section class="py-5 services-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold section-title">Our Services</h2>
-            <p class="text-muted section-subtitle">Professional photography for all occasions</p>
+            <h2 class="fw-bold section-title">
+                <span class="title-underline">Our Services</span>
+            </h2>
+            <p class="text-muted">Professional photography for all occasions</p>
         </div>
         <div class="row g-4">
             {% for service in services %}
-            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
-                {% include 'studio/partials/_service_card.html' %}
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div class="service-card-wrapper">
+                    {% include 'studio/partials/_service_card.html' %}
+                </div>
             </div>
             {% endfor %}
         </div>
         <div class="text-center mt-5" data-aos="fade-up">
-            <a href="{% url 'studio:services' %}" class="btn btn-primary pulse-button">See All Services & Pricing</a>
+            <a href="{% url 'studio:services' %}" class="btn btn-primary btn-lg px-5 rounded-pill btn-hover-grow">
+                <span>See All Services & Pricing</span>
+                <i class="fas fa-chevron-right ms-2"></i>
+            </a>
         </div>
     </div>
 </section>
 
-<!-- Testimonials -->
-<section class="py-5 bg-light">
+<!-- Testimonials Section -->
+<section class="py-5 testimonials-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
-            <h2 class="fw-bold section-title">Client Testimonials</h2>
-            <p class="text-muted section-subtitle">What our clients say about us</p>
+            <h2 class="fw-bold section-title">
+                <span class="title-underline">Client Testimonials</span>
+            </h2>
+            <p class="text-muted">What our clients say about us</p>
         </div>
-        <div class="row">
-            <div class="col-lg-8 mx-auto" data-aos="zoom-in">
-                <div class="card shadow-sm border-0 hover-3d">
-                    <div class="card-body p-4">
-                        <div class="text-center mb-4">
-                            <i class="fas fa-quote-left fa-3x text-primary opacity-25 floating"></i>
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="zoom-in">
+                <div class="testimonial-card">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-4 testimonial-image">
+                            <img src="{% static 'images/ali.jpg' %}" class="rounded-circle shadow-sm" width="80" height="80" alt="Client">
                         </div>
-                        <div class="text-center mb-4">
-                            <div class="d-flex justify-content-center mb-3">
-                                <img src="{% static 'images/ali.jpg' %}" class="rounded-circle hover-grow" width="80" height="80" alt="Client">
+                        <div class="testimonial-quote">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p class="lead fst-italic">"The photos from the Shoot are absolutely stunning! The team captured every special moment perfectly."</p>
+                            <i class="fas fa-quote-right quote-icon"></i>
+                        </div>
+                        <div class="testimonial-author">
+                            <h5 class="mt-3 mb-1">ALVO THE BOSS</h5>
+                            <p class="text-muted small">OUTDOOR Client</p>
+                            <div class="rating mt-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
                             </div>
-                            <p class="lead fst-italic testimonial-text">"The photos from our wedding are absolutely stunning! The team captured every special moment perfectly."</p>
-                            <h5 class="mt-3 mb-1">Sarah Johnson</h5>
-                            <p class="text-muted small">Wedding Client</p>
                         </div>
                     </div>
                 </div>
@@ -94,205 +137,532 @@
     </div>
 </section>
 
+<!-- Floating Action Button -->
+<div class="fab-container">
+    <a href="/" class="fab btn btn-primary rounded-circle pulse">
+        <i class="fas fa-camera"></i>
+    </a>
+</div>
+
 <style>
-    /* Hero Section Styles */
-    .hero-section {
-        position: relative;
-        background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%);
+:root {
+    --primary: #55218d;
+    --secondary: #2575fc;
+    --dark: #1a1a2e;
+    --light: #f8f9fa;
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    --gradient-hover: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Playfair Display', serif;
+}
+
+/* Global Styles */
+body {
+    font-family: var(--font-primary);
+    color: #333;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-secondary);
+    font-weight: 700;
+}
+
+/* Text Gradient */
+.text-gradient {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    background: var(--gradient);
+    color: white;
+    padding: 4rem 0;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    z-index: 0;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1;
+    position: relative;
+    margin-bottom: 1.5rem !important;
+    line-height: 1.2;
+}
+
+.hero-image-container {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-image-container img {
+    max-height: 400px;
+    object-fit: contain;
+    width: 100%;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform: perspective(1000px) rotateY(-10deg);
+    border: 10px solid rgba(255,255,255,0.1);
+    transition: all 0.5s ease;
+}
+
+.hero-image-container:hover img {
+    transform: perspective(1000px) rotateY(0deg);
+}
+
+/* Floating Animation */
+.floating {
+    animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Scroll Down Indicator */
+.scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.scroll-down span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(45deg);
+    margin: -10px;
+    animation: scroll-down 2s infinite;
+}
+
+.scroll-down span:nth-child(2) {
+    animation-delay: -0.2s;
+}
+
+.scroll-down span:nth-child(3) {
+    animation-delay: -0.4s;
+}
+
+@keyframes scroll-down {
+    0% {
+        opacity: 0;
+        transform: rotate(45deg) translate(-20px, -20px);
     }
-    
-    .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('{% static "images/noise.png" %}') repeat;
-        opacity: 0.05;
+    50% {
+        opacity: 1;
     }
-    
+    100% {
+        opacity: 0;
+        transform: rotate(45deg) translate(20px, 20px);
+    }
+}
+
+/* Section Styles */
+.featured-section {
+    background-color: #f8f9fa;
+    position: relative;
+    overflow: hidden;
+}
+
+.services-section {
+    background-color: white;
+    position: relative;
+}
+
+.testimonials-section {
+    background-color: #f1f3f5;
+    position: relative;
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.title-underline {
+    position: relative;
+    display: inline-block;
+}
+
+.title-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient);
+    transform: scaleX(0.8);
+    transition: transform 0.3s ease;
+}
+
+.section-title:hover .title-underline::after {
+    transform: scaleX(1);
+}
+
+/* Cards */
+.photo-card-wrapper, .service-card-wrapper {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.photo-card-wrapper:hover, .service-card-wrapper:hover {
+    transform: translateY(-10px);
+}
+
+.card {
+    border: none;
+    border-radius: 15px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.card-img-top {
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Testimonial Card */
+.testimonial-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.testimonial-image {
+    position: relative;
+    display: inline-block;
+}
+
+.testimonial-image::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: var(--gradient);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.testimonial-card:hover .testimonial-image::before {
+    opacity: 1;
+}
+
+.quote-icon {
+    color: var(--primary);
+    font-size: 1.5rem;
+    opacity: 0.5;
+    margin: 0 10px;
+}
+
+.rating {
+    color: #ffc107;
+}
+
+/* Buttons */
+.btn {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    background-size: 200% auto;
+    border: none;
+    padding: 0.8rem 2rem;
+}
+
+.btn-primary:hover {
+    background-position: right center;
+    box-shadow: 0 5px 20px rgba(106, 17, 203, 0.4);
+}
+
+.btn-outline-light {
+    border: 2px solid white;
+    background: transparent;
+}
+
+.btn-outline-light:hover {
+    background: white;
+    color: var(--primary) !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: white !important;
+}
+
+.btn-text, .btn-icon {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.btn-hover-gradient:hover .btn-icon {
+    transform: translateX(5px);
+}
+
+.btn-hover-grow {
+    transition: all 0.3s ease;
+}
+
+.btn-hover-grow:hover {
+    transform: scale(1.05);
+}
+
+/* FAB */
+.fab-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+}
+
+.fab {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.fab:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(106, 17, 203, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(106, 17, 203, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(106, 17, 203, 0);
+    }
+}
+
+/* Parallax Banner */
+.parallax-banner {
+    position: relative;
+    height: 300px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4rem 0;
+}
+
+.parallax-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
     .hero-title {
-        animation: textReveal 1s ease-out forwards;
-        opacity: 0;
-        transform: translateY(20px);
+        font-size: 2.2rem;
     }
-    
-    .hero-subtitle {
-        animation: textReveal 1s ease-out 0.3s forwards;
-        opacity: 0;
-        transform: translateY(20px);
+    .hero-image-container img {
+        max-height: 250px;
     }
-    
     .hero-buttons {
-        animation: textReveal 1s ease-out 0.6s forwards;
-        opacity: 0;
-        transform: translateY(20px);
+        justify-content: center;
     }
-    
-    .hero-image-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        transform: perspective(1000px) rotateY(-5deg);
-        transition: all 0.5s ease;
-    }
-    
-    .hero-image {
-        transition: transform 0.8s ease;
-    }
-    
-    .hero-image-container:hover {
-        transform: perspective(1000px) rotateY(0deg);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-    }
-    
-    .hero-image-container:hover .hero-image {
-        transform: scale(1.05);
-    }
-    
-    /* General Animations */
-    @keyframes textReveal {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
     .section-title {
-        position: relative;
-        display: inline-block;
+        font-size: 2rem;
     }
-    
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: #0d6efd;
-        transition: width 0.3s ease;
+    .parallax-banner {
+        height: 200px;
     }
-    
-    .section-title:hover::after {
-        width: 100px;
+}
+
+/* Animations */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
     }
-    
-    .hover-grow {
-        transition: all 0.3s ease;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
-    
-    .hover-grow:hover {
-        transform: scale(1.05);
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
     }
-    
-    .pulse-button {
-        animation: pulse 2s infinite;
-        transition: all 0.3s ease;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
-    
-    .pulse-button:hover {
-        animation: none;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3);
-    }
-    
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
-        }
-        70% {
-            box-shadow: 0 0 0 15px rgba(13, 110, 253, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
-        }
-    }
-    
-    .hover-3d {
-        transition: all 0.5s ease;
-        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-    }
-    
-    .hover-3d:hover {
-        transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
-        box-shadow: 20px 20px 40px rgba(0,0,0,0.1);
-    }
-    
-    .floating {
-        animation: floating 3s ease-in-out infinite;
-    }
-    
-    @keyframes floating {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-    }
-    
-    .testimonial-text {
-        position: relative;
-        padding: 20px;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-    }
-    
-    .testimonial-text::before {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-left: 15px solid transparent;
-        border-right: 15px solid transparent;
-        border-top: 15px solid white;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;
-        }
-    }
+}
 </style>
 
+{% block scripts %}
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax.js/1.5.0/parallax.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS library for scroll animations
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out-quad',
-            once: true,
-            mirror: false
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out-quad',
+        once: true,
+        mirror: false
+    });
+
+    // Initialize Particles.js
+    if (document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 4, random: true },
+                line_linked: { 
+                    enable: true, 
+                    distance: 150, 
+                    color: "#ffffff", 
+                    opacity: 0.3, 
+                    width: 1,
+                    shadow: {
+                        enable: true,
+                        color: "#6a11cb",
+                        blur: 5
+                    }
+                },
+                move: { 
+                    enable: true, 
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: { enable: true, rotateX: 600, rotateY: 1200 }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            }
         });
     }
-    
-    // Add hover sound effects to buttons
-    const buttons = document.querySelectorAll('.btn, .card');
-    buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            const sound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-hover-click-notification-259.mp3');
-            sound.volume = 0.2;
-            sound.play().catch(e => console.log('Audio play failed:', e));
+
+    // Initialize Parallax
+    $('.parallax-banner').parallax({
+        imageSrc: "{% static 'images/parallax-bg.jpg' %}"
+    });
+
+    // Smooth scroll for FAB
+    document.querySelector('.fab').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
         });
     });
-    
-    // Parallax effect for hero image
-    const heroImage = document.querySelector('.hero-image-container');
-    if (heroImage) {
-        window.addEventListener('mousemove', function(e) {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            heroImage.style.transform = `perspective(1000px) rotateY(${(x - 0.5) * 5}deg) rotateX(${(0.5 - y) * 5}deg)`;
-        });
-    }
+
+    // Add scroll animation class
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 100) {
+            document.querySelector('.fab').classList.add('scrolled');
+        } else {
+            document.querySelector('.fab').classList.remove('scrolled');
+        }
+    });
 });
 </script>
+{% endblock %}
 
 {% endblock %}

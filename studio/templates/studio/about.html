@@ -2,12 +2,15 @@
 {% load static %}
 
 {% block content %}
-<!-- About Hero -->
-<section class="about-hero bg-dark text-white py-5">
-    <div class="container py-5">
+<!-- About Hero with glowing effect -->
+<section class="about-hero bg-dark text-white py-5 position-relative overflow-hidden">
+    <div class="glowing-circle circle-1"></div>
+    <div class="glowing-circle circle-2"></div>
+    <div class="glowing-circle circle-3"></div>
+    <div class="container py-5 position-relative">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown">About Our Studio</h1>
+                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInDown text-gradient">About Our Studio</h1>
                 <p class="lead animate__animated animate__fadeIn animate__delay-1s">Professional photography with a personal touch</p>
             </div>
         </div>
@@ -15,77 +18,99 @@
 </section>
 
 <!-- Our Story -->
-<section class="py-5">
+<section class="py-5 bg-pattern">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="{% static 'images/alvin.png' %}" class="img-fluid rounded shadow zoom-hover" alt="Our Studio" 
-                     data-bs-toggle="modal" data-bs-target="#studioModal">
+                <div class="image-container">
+                    <img src="{% static 'images/y.png' %}" class="img-fluid rounded shadow zoom-hover glow-on-hover" 
+                         alt="Our Studio" data-bs-toggle="modal" data-bs-target="#studioModal">
+                    <div class="image-overlay"></div>
+                </div>
             </div>
             <div class="col-lg-6">
-                <h2 class="fw-bold mb-4">Our Story</h2>
-                <p class="lead">Founded in 2010, PhotoStudio has been capturing life's precious moments with creativity and passion.</p>
-                <p>What started as a small home studio has grown into one of the most sought-after photography studios in the region. Our team of professional photographers brings years of experience and a unique artistic vision to every project.</p>
-                <p>We believe that great photography is about more than just taking pictures - it's about telling stories, preserving memories, and creating art that will be cherished for generations.</p>
+                <h2 class="fw-bold mb-4 title-reveal">Our Story</h2>
+                <p class="lead text-highlight">Mivlens PhotoStudio and Cyber has been capturing life's precious moments with creativity and passion.</p>
+                <p class="text-reveal">What started as a small home studio has grown into one of the most sought-after photography studios in the region. Our team of professional photographers brings years of experience and a unique artistic vision to every project.</p>
+                <p class="text-reveal">We believe that great photography is about more than just taking pictures - it's about telling stories, preserving memories, and creating art that will be cherished for generations.</p>
                 <div class="mt-4">
-                    <a href="{% url 'studio:contact' %}" class="btn btn-primary hover-scale">Get in Touch</a>
+                    <a href="{% url 'studio:contact' %}" class="btn btn-primary hover-scale btn-glow">Get in Touch</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Our Team -->
-<section class="py-5 bg-light" id="team-section">
-    <div class="container">
+<!-- Our Team - Enhanced "Wow" Section -->
+<section class="py-5 bg-light position-relative overflow-hidden" id="team-section">
+    <div class="particles"></div>
+    <div class="container position-relative">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Meet Our Team</h2>
-            <p class="text-muted">The talented professionals behind the lens</p>
+            <h2 class="fw-bold title-reveal">Meet Our Team</h2>
+            <p class="text-muted subtitle-reveal">The talented professionals behind the lens</p>
         </div>
         <div class="row g-4 team-members">
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 team-card">
-                    <img src="{% static 'images/1734628791426.jpg' %}" class="card-img-top team-img" alt="Team Member">
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Alvo Johnson</h5>
-                        <p class="text-muted small">Founder & Lead Photographer</p>
-                        <p class="card-text">With over 15 years of experience, Alex specializes in wedding and portrait photography.</p>
-                        <div class="social-links mt-3">
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                <div class="card border-0 shadow-sm h-100 team-card glow-card">
+                    <div class="image-wrapper">
+                        <img src="{% static 'images/morris.jpg' %}" class="card-img-top team-img" alt="Team Member">
+                        <div class="expand-icon" onclick="enlargeImage(this)">
+                            <i class="fas fa-expand"></i>
                         </div>
                     </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Morris Mkenya</h5>
+                        <p class="text-muted small">Cyber Services</p>
+                        <p class="card-text">I am always available at the studio to provide cyber services to clients</p>
+                        <div class="social-links mt-3">
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-flare"></div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 team-card">
-                    <img src="{% static 'images/team2.jpg' %}" class="card-img-top team-img" alt="Team Member">
+                <div class="card border-0 shadow-sm h-100 team-card glow-card">
+                    <div class="image-wrapper">
+                        <img src="{% static 'images/team2.jpg' %}" class="card-img-top team-img" alt="Team Member">
+                        <div class="expand-icon" onclick="enlargeImage(this)">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </div>
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">Maria Garcia</h5>
                         <p class="text-muted small">Commercial Photographer</p>
                         <p class="card-text">Maria brings a creative eye to product and commercial photography projects.</p>
                         <div class="social-links mt-3">
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
+                    <div class="team-flare"></div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100 team-card">
-                    <img src="{% static 'images/team3.jpg' %}" class="card-img-top team-img" alt="Team Member">
+                <div class="card border-0 shadow-sm h-100 team-card glow-card">
+                    <div class="image-wrapper">
+                        <img src="{% static 'images/stepy.jpg' %}" class="card-img-top team-img" alt="Team Member">
+                        <div class="expand-icon" onclick="enlargeImage(this)">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                    </div>
                     <div class="card-body text-center">
-                        <h5 class="card-title mb-1">Sam Wilson</h5>
+                        <h5 class="card-title mb-1">Stepy Stephine</h5>
                         <p class="text-muted small">Photo Editor</p>
                         <p class="card-text">Sam ensures every image meets our high standards of quality and perfection.</p>
                         <div class="social-links mt-3">
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-muted mx-2"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-muted mx-2 hover-grow"><i class="fab fa-linkedin"></i></a>
                         </div>
                     </div>
+                    <div class="team-flare"></div>
                 </div>
             </div>
         </div>
@@ -93,37 +118,37 @@
 </section>
 
 <!-- Our Values -->
-<section class="py-5" id="values-section">
+<section class="py-5 position-relative" id="values-section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold">Our Values</h2>
-            <p class="text-muted">What makes us different</p>
+            <h2 class="fw-bold title-reveal">Our Values</h2>
+            <p class="text-muted subtitle-reveal">What makes us different</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="text-center p-4 value-card">
+                <div class="text-center p-4 value-card hover-glow">
                     <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
                         <i class="fas fa-camera-retro fa-2x"></i>
                     </div>
-                    <h4>Quality</h4>
+                    <h4 class="text-gradient">Quality</h4>
                     <p class="text-muted">We use only professional equipment and techniques to deliver the highest quality results.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center p-4 value-card">
+                <div class="text-center p-4 value-card hover-glow">
                     <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
-                        <i class="fas fa-heart fa-2x"></i>
+                        <i class="fas fa-heart fa-2x pulse"></i>
                     </div>
-                    <h4>Passion</h4>
+                    <h4 class="text-gradient">Passion</h4>
                     <p class="text-muted">Photography is our passion, and it shows in every image we capture.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="text-center p-4 value-card">
+                <div class="text-center p-4 value-card hover-glow">
                     <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4 hover-rotate" style="width: 80px; height: 80px; line-height: 80px;">
-                        <i class="fas fa-smile fa-2x"></i>
+                        <i class="fas fa-smile fa-2x bounce"></i>
                     </div>
-                    <h4>Satisfaction</h4>
+                    <h4 class="text-gradient">Satisfaction</h4>
                     <p class="text-muted">Your satisfaction is our top priority. We won't stop until you're thrilled with your photos.</p>
                 </div>
             </div>
@@ -134,15 +159,21 @@
 <!-- Image Modal -->
 <div class="modal fade" id="studioModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{% static 'images/alvin.png' %}" class="img-fluid" alt="Studio Full View">
+        <div class="modal-content bg-dark">
+            <div class="modal-body text-center p-0">
+                <img src="{% static 'images/alvin.png' %}" class="img-fluid modal-image" alt="Studio Full View">
             </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer justify-content-center border-0">
+                <button type="button" class="btn btn-outline-light btn-glow" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Image Enlargement Overlay -->
+<div id="imageOverlay" class="image-overlay" onclick="closeEnlarged()">
+    <span class="close-btn" onclick="closeEnlarged()">&times;</span>
+    <img class="overlay-content" id="enlargedImg">
 </div>
 
 {% endblock %}
@@ -150,79 +181,380 @@
 {% block extra_js %}
 <!-- Add Animate.css for animations -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 
 <style>
     /* Custom CSS for transitions and effects */
-    .zoom-hover {
-        transition: transform 0.3s ease;
-        cursor: pointer;
-    }
-    .zoom-hover:hover {
-        transform: scale(1.03);
-    }
-    
-    .hover-scale {
-        transition: transform 0.2s ease;
-    }
-    .hover-scale:hover {
-        transform: scale(1.05);
+    :root {
+        --primary-color: #0d6efd;
+        --secondary-color: #6c757d;
+        --glow-color: rgba(13, 110, 253, 0.6);
+        --text-gradient: linear-gradient(45deg, #0d6efd, #6610f2);
     }
     
-    .team-card {
+    /* Background pattern for sections */
+    .bg-pattern {
+        background-image: radial-gradient(circle at 10% 20%, rgba(13, 110, 253, 0.05) 0%, rgba(13, 110, 253, 0.05) 90%);
+    }
+    
+    /* Glowing text effect */
+    .text-gradient {
+        background: var(--text-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    
+    /* Glowing circles for hero section */
+    .glowing-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.6;
+        animation: float 15s infinite ease-in-out;
+    }
+    .circle-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--glow-color);
+        top: -100px;
+        left: -100px;
+        animation-delay: 0s;
+    }
+    .circle-2 {
+        width: 400px;
+        height: 400px;
+        background: rgba(102, 16, 242, 0.6);
+        bottom: -150px;
+        right: -100px;
+        animation-delay: 3s;
+    }
+    .circle-3 {
+        width: 200px;
+        height: 200px;
+        background: rgba(220, 53, 69, 0.6);
+        top: 50%;
+        left: 70%;
+        animation-delay: 6s;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(20px, 20px); }
+        50% { transform: translate(-20px, 10px); }
+        75% { transform: translate(10px, -20px); }
+    }
+    
+    /* Glow on hover effect */
+    .glow-on-hover:hover {
+        box-shadow: 0 0 15px var(--glow-color);
+    }
+    
+    /* Button glow effect */
+    .btn-glow {
         transition: all 0.3s ease;
-        transform: translateY(0);
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-glow:hover {
+        box-shadow: 0 0 15px var(--glow-color);
+    }
+    .btn-glow::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .btn-glow:hover::after {
+        opacity: 0.4;
+    }
+    
+    /* Team card enhancements */
+    .team-card {
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform: translateY(0) scale(1);
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px !important;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(5px);
     }
     .team-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+    }
+    
+    .glow-card {
+        position: relative;
+    }
+    .glow-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 15px;
+        padding: 2px;
+        background: linear-gradient(45deg, var(--primary-color), #6610f2);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .glow-card:hover::before {
+        opacity: 1;
     }
     
     .team-img {
-        transition: transform 0.5s ease;
+        transition: all 0.5s ease;
+        filter: grayscale(20%);
     }
     .team-card:hover .team-img {
+        filter: grayscale(0%);
         transform: scale(1.05);
     }
     
     .social-links {
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
     }
     .team-card:hover .social-links {
         opacity: 1;
-    }
-    
-    .hover-rotate {
-        transition: transform 0.3s ease;
-    }
-    .hover-rotate:hover {
-        transform: rotate(15deg);
-    }
-    
-    .value-card {
-        transition: all 0.3s ease;
-    }
-    .value-card:hover {
-        background-color: rgba(13, 110, 253, 0.05);
-        border-radius: 10px;
-    }
-    
-    /* Animation for sections when scrolling */
-    .fade-in-section {
-        opacity: 0;
-        transition: opacity 1s ease, transform 1s ease;
-        transform: translateY(20px);
-    }
-    .fade-in-section.is-visible {
-        opacity: 1;
         transform: translateY(0);
+    }
+    
+    .hover-grow {
+        transition: transform 0.2s ease;
+        display: inline-block;
+    }
+    .hover-grow:hover {
+        transform: scale(1.2);
+    }
+    
+    /* Particles background for team section */
+    .particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        background-image: radial-gradient(circle at 20% 30%, rgba(13, 110, 253, 0.1) 0%, transparent 50%),
+                          radial-gradient(circle at 80% 70%, rgba(220, 53, 69, 0.1) 0%, transparent 50%);
+    }
+    
+    /* Team flare effect */
+    .team-flare {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(13, 110, 253, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    .team-card:hover .team-flare {
+        opacity: 1;
+    }
+    
+    /* Image hover effect */
+    .image-container {
+        position: relative;
+        display: inline-block;
+    }
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(13, 110, 253, 0.3), rgba(102, 16, 242, 0.3));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 0.25rem;
+    }
+    .image-container:hover .image-overlay {
+        opacity: 1;
+    }
+    
+    /* Text highlight */
+    .text-highlight {
+        position: relative;
+        display: inline-block;
+    }
+    .text-highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30%;
+        background: rgba(13, 110, 253, 0.2);
+        z-index: -1;
+        transition: height 0.3s ease;
+    }
+    .text-highlight:hover::after {
+        height: 50%;
+    }
+    
+    /* Hover glow effect */
+    .hover-glow {
+        transition: box-shadow 0.3s ease;
+    }
+    .hover-glow:hover {
+        box-shadow: 0 0 20px var(--glow-color);
+    }
+    
+    /* Animation classes */
+    .title-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards 0.3s;
+    }
+    .subtitle-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards 0.6s;
+    }
+    .text-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards;
+        animation-delay: calc(0.1s * var(--i));
+    }
+    
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Special animations */
+    .pulse {
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    /* Image enlargement overlay */
+    .image-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        text-align: center;
+        padding-top: 50px;
+    }
+    
+    .overlay-content {
+        max-width: 90%;
+        max-height: 80vh;
+        margin: auto;
+        display: block;
+        animation: zoomIn 0.3s;
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .close-btn:hover {
+        color: #ccc;
+    }
+    
+    /* Image wrapper for team members */
+    .image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .expand-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .team-card:hover .expand-icon {
+        opacity: 1;
+    }
+    
+    /* Modal styling */
+    .modal-content {
+        background: transparent;
+        border: none;
+    }
+    
+    .modal-image {
+        border-radius: 0.3rem;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .team-card {
+            margin-bottom: 20px;
+        }
+        .expand-icon {
+            opacity: 1;
+        }
     }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Add intersection observer for scroll animations
-        const fadeSections = document.querySelectorAll('#team-section, #values-section');
+        const fadeSections = document.querySelectorAll('.fade-in-section, #team-section, #values-section');
+        const textElements = document.querySelectorAll('.text-reveal');
+        
+        // Set animation delay for each text element
+        textElements.forEach((el, index) => {
+            el.style.setProperty('--i', index);
+        });
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -266,6 +598,72 @@
             const aboutHero = document.querySelector('.about-hero');
             aboutHero.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
         });
+        
+        // Initialize particles for team section
+        initParticles();
     });
+    
+    // Function to initialize particles in team section
+    function initParticles() {
+        const particlesContainer = document.querySelector('.particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random properties
+            const size = Math.random() * 5 + 2;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const delay = Math.random() * 10;
+            const duration = Math.random() * 20 + 10;
+            const color = `rgba(${Math.floor(Math.random() * 56) + 100}, 
+                              ${Math.floor(Math.random() * 156) + 100}, 
+                              253, 
+                              ${Math.random() * 0.4 + 0.1})`;
+            
+            particle.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                border-radius: 50%;
+                top: ${posY}%;
+                left: ${posX}%;
+                animation: float ${duration}s infinite ease-in-out ${delay}s;
+                filter: blur(1px);
+            `;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+    
+    // Function to enlarge image
+    function enlargeImage(element) {
+        const card = element.closest('.team-card');
+        const img = card.querySelector('.team-img');
+        const overlay = document.getElementById('imageOverlay');
+        const enlargedImg = document.getElementById('enlargedImg');
+        
+        enlargedImg.src = img.src;
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Function to close enlarged image
+    function closeEnlarged() {
+        const overlay = document.getElementById('imageOverlay');
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Close overlay when clicking outside image
+    window.onclick = function(event) {
+        const overlay = document.getElementById('imageOverlay');
+        if (event.target == overlay) {
+            closeEnlarged();
+        }
+    }
 </script>
 {% endblock %}
