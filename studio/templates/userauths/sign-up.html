@@ -1,409 +1,387 @@
 {% extends 'base2.html' %}
 {% load static %}
 {% block content %}
-
 <style>
-/* Centering Page Content with Gradient Background */
-.page-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-     background: linear-gradient(135deg, #eeeff3 0%, #f1f0f3 100%);
-    padding: 20px;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-/* Form Container Styling with Glass Morphism Effect */
-.form-container {
-    max-width: 700px;
-    width: 100%;
-    padding: 40px;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    margin: auto;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.form-container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-}
-
-/* Heading Styles with Gradient Text */
-.heading_s1 h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-}
-
-.heading_s1 p {
-    color: #666;
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-}
-
-.heading_s1 a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.heading_s1 a:hover {
-    color: #764ba2;
-    text-decoration: underline;
-}
-
-/* Alert Styling */
-.alert {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    animation: fadeIn 0.5s ease;
-}
-
-/* Form Group Styling */
-.form-group {
-    margin-bottom: 25px;
-    position: relative;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 14px 15px;
-    font-size: 1rem;
-    color: #333;
-    background-color: rgba(243, 244, 246, 0.7);
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    background-color: #fff;
-    border-color: #667eea;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-}
-
-/* Password Toggle Icon */
-.toggle-password {
-    position: absolute;
-    right: 15px;
-    top: 40px;
-    cursor: pointer;
-    font-size: 1.2em;
-    color: #888;
-    z-index: 10;
-    transition: color 0.3s ease;
-}
-
-.toggle-password:hover {
-    color: #667eea;
-}
-
-/* Submit Button Styling with Gradient */
-.btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-align: center;
-    color: #fff;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    margin-top: 10px;
-}
-
-.btn:hover {
-    background: linear-gradient(to right, #5a6fd1, #6a4295);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-/* Input Focus Animations */
-@keyframes inputHighlighter {
-    from { width: 0; }
-    to   { width: 100%; }
-}
-
-.form-group:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(to right, #667eea, #764ba2);
-    transition: width 0.3s ease;
-}
-
-.form-group.focus:after {
-    width: 100%;
-}
-
-/* Floating Label Effect */
-.form-group.floating-label {
-    position: relative;
-    margin-bottom: 30px;
-}
-
-.form-group.floating-label label {
-    position: absolute;
-    top: 18px;
-    left: 15px;
-    color: #999;
-    font-weight: normal;
-    transition: all 0.3s ease;
-    pointer-events: none;
-}
-
-.form-group.floating-label input:focus + label,
-.form-group.floating-label input:not(:placeholder-shown) + label {
-    top: -10px;
-    left: 10px;
-    font-size: 0.8rem;
-    color: #667eea;
-    background: #fff;
-    padding: 0 5px;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .form-container {
-        padding: 30px 20px;
+    body {
+        background-image: url('{% static "images/y.png" %}');
+        background-size: cover;
+        background-position: center;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
     }
-    
-    .heading_s1 h1 {
-        font-size: 2rem;
+
+    .login_wrap {
+        background-color: rgba(178, 176, 204, 0.603);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        width: 100%;
+        min-width: 500px;
+        margin: auto;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
-}
+
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e6ed;
+        border-radius: 8px;
+        font-size: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #1877f2;
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2);
+        outline: none;
+    }
+
+    .btn-heading {
+        background: linear-gradient(to right, #1877f2, #166fe5);
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+    }
+
+    .btn-heading:hover {
+        background: linear-gradient(to right, #166fe5, #1157c2);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+    }
+
+    .divider {
+        height: 1px;
+        background: linear-gradient(to right, transparent, #ccc, transparent);
+        margin: 25px 0;
+        position: relative;
+    }
+
+    .create-account {
+        background: linear-gradient(to right, #42b72a, #36a420);
+        padding: 12px;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(66, 183, 42, 0.3);
+    }
+
+    .create-account:hover {
+        background: linear-gradient(to right, #36a420, #2d921b);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(66, 183, 42, 0.4);
+    }
+
+    .auto-type {
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(to right, #1877f2, #764ba2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        animation: typing 3.5s steps(40, end) infinite;
+    }
+
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+
+    .glow {
+        animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+        from { text-shadow: 0 0 10px rgba(24, 119, 242, 0.7); }
+        to { text-shadow: 0 0 20px rgba(24, 119, 242, 1); }
+    }
+
+    .phone-input-container {
+        display: flex;
+        align-items: center;
+        border: 2px solid #e0e6ed;
+        border-radius: 8px;
+        padding: 5px 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+    }
+
+    .phone-input-container:focus-within {
+        border-color: #1877f2;
+        box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2);
+    }
+
+    .phone-input-container img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .phone-input-container input {
+        border: none;
+        flex: 1;
+        padding: 10px;
+        font-size: 15px;
+        background-color: transparent;
+    }
+
+    .error-message {
+        color: #e53e3e;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .login_wrap {
+            padding: 20px;
+            max-width: 90%;
+        }
+        
+        .auto-type {
+            font-size: 24px;
+        }
+    }
 </style>
 
 <main class="main pages">
-    <div class="page-content">
-        <div class="form-container">
-            <div class="heading_s1">
-                <h1>Create an Account</h1>
-                <p class="text-center">Already have an account? <a href="{% url 'userauths:sign-in' %}">Login</a></p>
-            </div>
-
-            {% if form.errors %}
-            <div class="alert alert-danger">
-                <strong>{{ form.errors }}</strong>
-            </div>
-            {% endif %}
-
-            <form method="post" id="registrationForm">
-                {% csrf_token %}
-                <div class="form-group floating-label">
-                    {{ form.username }}
-                    <label for="{{ form.username.id_for_label }}">Username</label>
-                </div>
-                <div class="form-group floating-label">
-                    {{ form.email }}
-                    <label for="{{ form.email.id_for_label }}">Email</label>
-                </div>
-                <div class="form-group floating-label position-relative">
-                    {{ form.password1 }}
-                    <label for="{{ form.password1.id_for_label }}">Password</label>
-                    <span id="togglePassword1" class="toggle-password" title="Show Password">
-                        <i class="fa fa-eye" id="eyeIcon1"></i>
-                    </span>
-                </div>
-                <div class="form-group floating-label position-relative">
-                    {{ form.password2 }}
-                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
-                    <span id="togglePassword2" class="toggle-password" title="Show Password">
-                        <i class="fa fa-eye" id="eyeIcon2"></i>
-                    </span>
-                </div>
-                <div class="form-group floating-label">
-                  {{ form.phone }}
-                <label for="{{ form.phone.id_for_label }}">Phone</label>
+    <div class="page-content pt-50 pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <div class="login_wrap">
+                                <div class="padding_eight_all">
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger mb-4">
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <p class="error-message">{{ error|escape }}</p>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <p class="error-message">{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <div class="heading_s1">
+                                        <div class="auto-type">Mivlens Studio</div>
+                                        <h2 class="mb-4 glow">Create Your Account</h2>
+                                    </div>
+                                    
+                                    <form method="POST" id="signupForm">
+                                        {% csrf_token %}
+                                        
+                                        <div class="form-group">
+                                            <label for="id_username">Username</label>
+                                            <input type="text" name="username" id="id_username" 
+                                                   placeholder="Enter your username" required
+                                                   value="{{ form.username.value|default_if_none:'' }}">
+                                            {% if form.username.errors %}
+                                                <div class="error-message">{{ form.username.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="id_phone">Phone Number</label>
+                                            <div class="phone-input-container">
+                                                <img src="{% static 'images/kenya.png' %}" alt="Kenya Flag">
+                                                <input type="text" name="phone" id="id_phone" 
+                                                       placeholder="e.g. 712345678" required
+                                                       value="{{ form.phone.value|default_if_none:'' }}">
+                                            </div>
+                                            {% if form.phone.errors %}
+                                                <div class="error-message">{{ form.phone.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="id_password1">Password</label>
+                                            <input type="password" name="password1" id="id_password1" 
+                                                   placeholder="Create a password" required>
+                                            {% if form.password1.errors %}
+                                                <div class="error-message">{{ form.password1.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="id_password2">Confirm Password</label>
+                                            <input type="password" name="password2" id="id_password2" 
+                                                   placeholder="Repeat your password" required>
+                                            {% if form.password2.errors %}
+                                                <div class="error-message">{{ form.password2.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <button type="submit" class="btn btn-heading">
+                                                Create Account
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="divider"></div>
+                                        
+                                        <div class="text-center">
+                                            <p class="mb-3">Already have an account?</p>
+                                            <a href="{% url 'userauths:sign-in' %}" class="create-account">
+                                                Sign In Now
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-
-                <div class="form-group mb-30">
-                    <button type="submit" class="btn">
-                        <span class="btn-text">Create Account</span>
-                        <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
-                    </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+</main>
 
-    <!-- Password Toggle Script and Input Validation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-    <script>
-        // Password Toggle Function with Animation
-        function togglePasswordVisibility(toggleElement, inputElement, eyeIcon) {
-            toggleElement.addEventListener('click', function () {
-                const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
-                inputElement.setAttribute('type', type);
-                eyeIcon.classList.toggle('fa-eye');
-                eyeIcon.classList.toggle('fa-eye-slash');
-                
-                // Add animation
-                toggleElement.style.animation = 'float 0.5s ease';
-                setTimeout(() => {
-                    toggleElement.style.animation = '';
-                }, 500);
-            });
-        }
-
-        // Get elements for password fields
-        const togglePassword1 = document.querySelector('#togglePassword1');
-        const passwordInput1 = document.querySelector('[name="password1"]');
-        const eyeIcon1 = document.querySelector('#eyeIcon1');
-
-        const togglePassword2 = document.querySelector('#togglePassword2');
-        const passwordInput2 = document.querySelector('[name="password2"]');
-        const eyeIcon2 = document.querySelector('#eyeIcon2');
-
-        togglePasswordVisibility(togglePassword1, passwordInput1, eyeIcon1);
-        togglePasswordVisibility(togglePassword2, passwordInput2, eyeIcon2);
-
-        // Floating label functionality
-        document.querySelectorAll('.floating-label input, .floating-label select').forEach(input => {
-            // Add focus/blur events
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focus');
-            });
+<script>
+    // Password toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add toggle password visibility for both password fields
+        const passwordFields = document.querySelectorAll('input[type="password"]');
+        
+        passwordFields.forEach(field => {
+            const container = field.parentElement;
+            const toggle = document.createElement('span');
+            toggle.innerHTML = '<i class="fas fa-eye"></i>';
+            toggle.style.position = 'absolute';
+            toggle.style.right = '15px';
+            toggle.style.top = '50%';
+            toggle.style.transform = 'translateY(-50%)';
+            toggle.style.cursor = 'pointer';
+            toggle.style.color = '#a0aec0';
             
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focus');
+            if (container.classList.contains('phone-input-container')) {
+                // Skip for phone input container
+                return;
+            }
+            
+            container.style.position = 'relative';
+            container.appendChild(toggle);
+            
+            toggle.addEventListener('click', function() {
+                const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+                field.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+        });
+        
+        // Client-side validation
+        const form = document.getElementById('signupForm');
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => {
+                if (el.classList.contains('server-error')) {
+                    el.remove();
                 }
             });
             
-            // Initialize fields with values
-            if (input.value) {
-                input.parentElement.classList.add('focus');
-            }
-        });
-
-        // Form Validation with Better Feedback
-        document.getElementById("registrationForm").addEventListener("submit", function(event) {
-            let isValid = true;
-            const emailInput = document.querySelector('[name="email"]');
-            const phoneInput = document.querySelector('[name="phone Number"]');
+            // Validate each field
+            const username = document.getElementById('id_username');
+            const phone = document.getElementById('id_phone');
+            const password1 = document.getElementById('id_password1');
+            const password2 = document.getElementById('id_password2');
             
-            // Email Validation
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailPattern.test(emailInput.value)) {
-                showError(emailInput, "Please enter a valid email address.");
+            if (!username.value.trim()) {
+                showError(username, 'Username is required');
                 isValid = false;
             }
             
-            // Phone Validation (10 digits, starts with 07 or 01)
-            const phonePattern = /^(07|01)\d{8}$/;
-            if (!phonePattern.test(phoneInput.value)) {
-                showError(phoneInput, "Please enter a valid 10-digit phone number starting with 07 or 01.");
+            if (!phone.value.trim()) {
+                showError(phone, 'Phone number is required');
+                isValid = false;
+            } else if (!/^\d+$/.test(phone.value)) {
+                showError(phone, 'Phone number must contain only digits');
                 isValid = false;
             }
             
-            // If form is not valid, prevent submission
+            if (!password1.value.trim()) {
+                showError(password1, 'Password is required');
+                isValid = false;
+            } else if (password1.value.length < 8) {
+                showError(password1, 'Password must be at least 8 characters');
+                isValid = false;
+            }
+            
+            if (password1.value !== password2.value) {
+                showError(password2, 'Passwords do not match');
+                isValid = false;
+            }
+            
             if (!isValid) {
-                event.preventDefault();
+                e.preventDefault();
             }
         });
         
-        function showError(inputElement, message) {
-            // Create error element if it doesn't exist
-            let errorElement = inputElement.nextElementSibling;
-            if (!errorElement || !errorElement.classList.contains('error-message')) {
-                errorElement = document.createElement('div');
-                errorElement.className = 'error-message';
-                errorElement.style.color = '#e74c3c';
-                errorElement.style.fontSize = '0.85rem';
-                errorElement.style.marginTop = '5px';
-                errorElement.style.animation = 'fadeIn 0.3s ease';
-                inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+        function showError(input, message) {
+            const container = input.parentElement;
+            let error = container.querySelector('.error-message');
+            
+            if (!error) {
+                error = document.createElement('div');
+                error.className = 'error-message';
+                container.appendChild(error);
             }
             
-            // Style the input to show error
-            inputElement.style.borderColor = '#e74c3c';
-            inputElement.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.2)';
+            error.textContent = message;
+            input.style.borderColor = '#e53e3e';
+            input.style.boxShadow = '0 0 0 3px rgba(229, 62, 62, 0.1)';
             
-            // Set error message
-            errorElement.textContent = message;
-            
-            // Focus on the input
-            inputElement.focus();
-            
-            // Remove error styling after correction
-            inputElement.addEventListener('input', function clearError() {
-                inputElement.style.borderColor = '#e5e7eb';
-                inputElement.style.boxShadow = 'none';
-                errorElement.textContent = '';
-                inputElement.removeEventListener('input', clearError);
-            });
+            // Clear error on input
+            input.addEventListener('input', function clearError() {
+                input.style.borderColor = '#e0e6ed';
+                input.style.boxShadow = 'none';
+                if (error && error.textContent === message) {
+                    error.textContent = '';
+                }
+            }, { once: true });
         }
-        
-        // Add animation to form on load
-        document.addEventListener('DOMContentLoaded', function() {
-            const formContainer = document.querySelector('.form-container');
-            formContainer.style.animation = 'fadeIn 0.8s ease';
-            
-            // Add hover effect to form inputs
-            document.querySelectorAll('.form-group input, .form-group select').forEach(input => {
-                input.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.01)';
-                });
-                
-                input.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-        });
-    </script>
-</main>
+    });
+</script>
 
 {% endblock content %}

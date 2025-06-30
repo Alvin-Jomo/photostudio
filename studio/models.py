@@ -48,19 +48,6 @@ class Photo(models.Model):
         return reverse('studio:photo_detail', kwargs={'pk': self.pk})
     
    
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-    
-    def __str__(self):
-        return self.name
-
 class Service(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
@@ -80,3 +67,44 @@ class Service(models.Model):
     
     def get_absolute_url(self):
         return reverse('studio:services')
+
+class ContactUs(models.Model):
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.full_name} - {self.subject}"
+    
+    class Meta:
+        verbose_name = 'Contact Us'
+        verbose_name_plural = 'Contact Us Messages'
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+class Complaint(models.Model):
+    name = models.CharField(max_length=100)  # Customer name
+    contact = models.CharField(max_length=15)  # Customer contact
+    message = models.TextField()  # Complaint message
+    image = models.ImageField(upload_to='complaint_images/', blank=True, null=True)  # Optional image
+    video = models.FileField(upload_to='complaint_videos/', blank=True, null=True)  # Optional video (e.g., MP4)
+    response = models.TextField(blank=True, null=True)  # Admin response
+    date_submitted = models.DateTimeField(auto_now_add=True)  # Submission date
+    date_responded = models.DateTimeField(blank=True, null=True)  # Response date (set when admin responds)
+
+    def __str__(self):
+        return f"Complaint from {self.name} - Room {self.room_number}"
+

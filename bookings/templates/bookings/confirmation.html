@@ -120,15 +120,102 @@
                     </div>
                     {% endif %}
                     
-                    <!-- CTA Buttons -->
-                    <div class="d-flex justify-content-between mt-5">
-                        <a href="{% url 'studio:home' %}" class="btn btn-outline-secondary btn-hover-scale">
-                            <i class="fas fa-home me-2"></i>Back to Home
-                        </a>
-                        <a href="{% url 'bookings:user_bookings' %}" class="btn btn-primary btn-hover-scale" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-                            <i class="fas fa-calendar-alt me-2"></i>View My Bookings
-                        </a>
-                    </div>
+                   
+                      <!-- Add this Download Receipt button near your other CTA buttons -->
+    <div class="d-flex justify-content-between mt-5">
+        <a href="{% url 'studio:home' %}" class="btn btn-outline-secondary btn-hover-scale">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </a>
+        <button id="downloadReceiptBtn" class="btn btn-success btn-hover-scale">
+            <i class="fas fa-download me-2"></i>Download Receipt
+        </button>
+        <a href="{% url 'bookings:user_bookings' %}" class="btn btn-primary btn-hover-scale" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+            <i class="fas fa-calendar-alt me-2"></i>View My Bookings
+        </a>
+    </div>
+</div>
+
+<!-- Hidden receipt template that will be used for download -->
+<div id="receiptTemplate" style="display: none; font-family: 'Arial', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #fff;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <!-- Replace with your logo -->
+        <img src="{% static 'images/y.png' %}" alt="Your Business Logo" style="max-width: 200px; height: auto; margin-bottom: 15px;">
+        <h1 style="color: #764ba2; margin-bottom: 5px;">Booking Receipt</h1>
+        <p style="color: #666; margin-bottom: 5px;">Thank you for your booking!</p>
+        <div style="border-top: 2px dashed #764ba2; margin: 15px 0;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <div>
+            <h3 style="color: #333; margin-bottom: 10px;">Business Details</h3>
+            <p style="margin: 5px 0;"><strong>Mivlens Photostudio and Cyber</strong></p>
+            <p style="margin: 5px 0;">Located Along Kenya Builders Road Honey Suckle Phase 3 Opposite Sela Care Health Care, NAIROBI</p>
+            <p style="margin: 5px 0;">Phone: +254 799620033</p>
+            <p style="margin: 5px 0;">Email: mivlensstudio@gmail.com</p>
+        </div>
+        <div style="text-align: right;">
+            <h3 style="color: #333; margin-bottom: 10px;">Booking Details</h3>
+            <p style="margin: 5px 0;"><strong>Receipt #:</strong> #{{ booking.id }}</p>
+            <p style="margin: 5px 0;"><strong>Date:</strong> {{ booking.booking_date|date:"F j, Y" }}</p>
+            <p style="margin: 5px 0;"><strong>Time:</strong> {{ booking.booking_date|date:"H:i" }}</p>
+            <p style="margin: 5px 0;"><strong>Status:</strong> {{ booking.get_status_display }}</p>
+        </div>
+    </div>
+    
+    <div style="margin-bottom: 30px;">
+        <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">Service Information</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Description</th>
+                    <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ booking.service.name }}</td>
+                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #eee;">Ksh {{ booking.final_price }}</td>
+                </tr>
+                {% if booking.coupon_code %}
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">Coupon Applied ({{ booking.coupon_code }})</td>
+                    <td style="padding: 10px; text-align: right; border-bottom: 1px solid #eee;">-Ksh {{ booking.discount_amount|default:0 }}</td>
+                </tr>
+                {% endif %}
+                <tr style="font-weight: bold;">
+                    <td style="padding: 10px;">Total</td>
+                    <td style="padding: 10px; text-align: right;">Ksh {{ booking.final_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- <div style="margin-bottom: 30px;">
+        <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">Customer Information</h3>
+        <p style="margin: 5px 0;"><strong>Name:</strong> {{ user.booking.name }}</p>
+        <p style="margin: 5px 0;"><strong>Email:</strong> {{ booking.phone }}</p>
+        {% if booking.user.phone_number %}
+        <p style="margin: 5px 0;"><strong>Phone:</strong> {{ booking.user.phone_number }}</p>
+        {% endif %}
+    </div> -->
+    
+    <div style="margin-bottom: 30px;">
+        <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">Booking Notes</h3>
+        {% if booking.notes %}
+        <p>{{ booking.notes }}</p>
+        {% else %}
+        <p>No additional notes provided.</p>
+        {% endif %}
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; color: #666; font-size: 14px;">
+        <div style="border-top: 2px dashed #764ba2; margin-bottom: 15px;"></div>
+        <p>Thank you for choosing us!</p>
+        <p>For any inquiries, please contact us at +254 712 345 678 or info@yourbusiness.com</p>
+        <p>Visit us at: Located Along Kenya Builders Road Honey Suckle Phase 3 Opposite Sela Care Health Care, Nairobi</p>
+    </div>
+</div>
+
                 </div>
             </div>
         </div>
@@ -301,47 +388,151 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set delay indices for table rows
-        document.querySelectorAll('.table-hover tbody tr').forEach((tr, index) => {
-            tr.style.setProperty('--i', index);
-        });
+<!-- Load libraries with fallback handling -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-        {% if booking.status != 'cancelled' %}
-            // Simple confetti effect
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            }, 500);
-        {% endif %}
-        
-        // Social sharing buttons
-        document.querySelectorAll('.share-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const platform = this.getAttribute('data-platform');
-                let url = '';
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ======================
+    // PDF RECEIPT GENERATION
+    // ======================
+    const downloadBtn = document.getElementById('downloadReceiptBtn');
+    
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', async function() {
+            try {
+                // Show loading state
+                const originalBtnText = downloadBtn.innerHTML;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Generating PDF...';
+                downloadBtn.disabled = true;
                 
-                switch(platform) {
-                    case 'facebook':
-                        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-                        break;
-                    case 'twitter':
-                        url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=I just booked an appointment at ${encodeURIComponent('Your Studio Name')}!`;
-                        break;
-                    case 'instagram':
-                        alert('For Instagram, please share via Stories and tag us!');
-                        return;
+                // Verify libraries are loaded
+                if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                    throw new Error('Required PDF libraries not loaded. Please refresh the page.');
                 }
                 
-                window.open(url, '_blank', 'width=600,height=400');
+                // Create a temporary container for the receipt
+                const receiptContainer = document.createElement('div');
+                receiptContainer.style.position = 'absolute';
+                receiptContainer.style.left = '-9999px';
+                receiptContainer.style.width = '800px';
+                receiptContainer.style.padding = '20px';
+                receiptContainer.style.backgroundColor = '#ffffff';
+                document.body.appendChild(receiptContainer);
+                
+                // Clone and style the receipt template
+                const receiptTemplate = document.getElementById('receiptTemplate').cloneNode(true);
+                receiptTemplate.style.display = 'block';
+                receiptTemplate.style.width = '100%';
+                receiptTemplate.style.fontFamily = 'Arial, sans-serif';
+                receiptContainer.appendChild(receiptTemplate);
+                
+                // Generate the PDF
+                const canvas = await html2canvas(receiptContainer, {
+                    scale: 2,
+                    logging: true,
+                    useCORS: true,
+                    allowTaint: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    backgroundColor: '#ffffff'
+                });
+                
+                // Initialize PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                
+                // Add image to PDF (centered)
+                const imgData = canvas.toDataURL('image/png');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                
+                // Save the PDF
+                pdf.save('booking_receipt_{{ booking.id }}.pdf');
+                
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                alert('Failed to generate PDF: ' + error.message);
+            } finally {
+                // Clean up
+                if (receiptContainer) {
+                    document.body.removeChild(receiptContainer);
+                }
+                
+                // Reset button
+                downloadBtn.innerHTML = originalBtnText;
+                downloadBtn.disabled = false;
+            }
+        });
+    }
+
+    // ======================
+    // REST OF YOUR CODE (confetti, animations, etc.)
+    // ======================
+    // Animate table rows
+    document.querySelectorAll('.table-hover tbody tr').forEach((tr, index) => {
+        tr.style.setProperty('--i', index);
+    });
+
+    // Confetti if booking is not cancelled
+    {% if booking.status != 'cancelled' %}
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
             });
+        }, 500);
+    {% endif %}
+
+    // Share buttons functionality
+    document.querySelectorAll('.share-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const platform = this.dataset.platform;
+            let url = '';
+            
+            switch(platform) {
+                case 'facebook':
+                    url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+                    break;
+                case 'twitter':
+                    url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=I just booked at {{ studio_name }}!`;
+                    break;
+                case 'instagram':
+                    alert('For Instagram, please share manually via Stories and tag us!');
+                    return;
+            }
+            
+            if(url) window.open(url, '_blank', 'width=600,height=400');
         });
     });
+});
 </script>
+
+<style>
+/* Ensure proper styling for PDF generation */
+#receiptTemplate {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Hide template from view but keep it accessible for PDF */
+#receiptTemplate[style*="display: none"] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+</style>
 {% endblock %}

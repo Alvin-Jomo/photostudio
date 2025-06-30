@@ -5,94 +5,83 @@ from django.contrib import messages
 from userauths.models import Profile, User
 import re
 from django.conf import settings
-from .backends import ApprovedUserBackend
-from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
 
-
+@csrf_protect
 def login_view(request):
-    """
-    Handles user login, allowing login via username, email, or phone number.
-    """
     if request.user.is_authenticated:
-        messages.warning(request, "You are already logged in.")
-        return redirect("studio:home")  # Redirect to home if already logged in
+        messages.warning(request, "Hey, you are already logged in.")
+        return redirect("studio:home")
 
     if request.method == "POST":
-        identifier = request.POST.get("identifier")
-        password = request.POST.get("password")
+        identifier = request.POST.get("identifier", "").strip()
+        password = request.POST.get("password", "").strip()
 
-        # Match identifier to username, email, or phone number
-        if re.match(r'^[\w\.-]+@[\w\.-]+$', identifier):  # Email
-            user = User.objects.filter(email=identifier).first()
-        elif re.match(r'^(07|01)\d{8}$', identifier):  # Phone number
-            user = User.objects.filter(profile__phone=identifier).first()
-        else:  # Username
-            user = User.objects.filter(username=identifier).first()
+        if not identifier or not password:
+            messages.error(request, "Please fill in all required fields")
+            return redirect("userauths:sign-in")
 
-        # Authenticate user
-        if user is not None:
-            auth_backend = ApprovedUserBackend()
-            authenticated_user = auth_backend.authenticate(request, username=user.username, password=password)
-
-            if authenticated_user:
-                login(request, authenticated_user)
-                messages.success(request, "You are logged in.")
-                next_url = request.GET.get("next", 'studio:home')  # Default to 'home' inst ead of 'index'
-                return redirect(next_url)
+        try:
+            # Try to find user by phone, email, or username
+            if identifier.isdigit():  # Phone number
+                user = User.objects.get(phone=identifier)
+                auth_user = authenticate(request, phone=identifier, password=password)
+            elif '@' in identifier:  # Email
+                user = User.objects.get(email=identifier)
+                auth_user = authenticate(request, email=identifier, password=password)
+            else:  # Username
+                user = User.objects.get(username=identifier)
+                auth_user = authenticate(request, username=identifier, password=password)
+            
+            if auth_user is not None:
+                login(request, auth_user)
+                messages.success(request, f"Welcome back, {auth_user.username}!")
+                next_url = request.GET.get('next')
+                return redirect(next_url if next_url else "studio:home")
             else:
-                if not user.is_active:
-                    messages.error(request, "Your account is inactive. Contact admin for assistance.")
-                elif not user.is_approved:
-                    messages.error(request, "Your account is not approved yet. Please wait for admin approval.")
-                else:
-                    messages.error(request, "Invalid credentials. Please try again.")
-        else:
-            messages.error(request, "Invalid credentials. Please try again.")
+                messages.error(request, "Invalid credentials")
+                
+        except User.DoesNotExist:
+            messages.error(request, "Account not found")
+        except Exception as e:
+            messages.error(request, f"Login error: {str(e)}")
 
     return render(request, "userauths/sign-in.html")
-
+    
+@csrf_protect
 def register_view(request):
-    """
-    Handles user registration.
-    """
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             new_user = form.save()
             username = form.cleaned_data.get("username")
-
-            # Success message for user
-            messages.success(
+            phone = form.cleaned_data.get("phone")
+            
+            # Authenticate with phone (USERNAME_FIELD)
+            auth_user = authenticate(
                 request,
-                f"Hey {username}, your account was created successfully. Please wait for admin approval."
+                phone=phone,
+                password=form.cleaned_data['password1']
             )
-
-            # Notify the admin about the new user
-            try:
-                send_mail(
-                    'New Customer Registered',
-                    f'A new customer has registered.\n\nUsername: {username}\nEmail: {new_user.email}',
-                    settings.DEFAULT_FROM_EMAIL,
-                    ['alvotheboss@gmail.com', settings.DEFAULT_FROM_EMAIL],
-                    fail_silently=False,
-                )
-            except Exception as e:
-                messages.error(request, f"Failed to notify admin: {str(e)}")
-
-            return redirect('userauths:sign-in')
+            
+            if auth_user:
+                login(request, auth_user)
+                messages.success(request, f"Welcome {username}! Your account was created successfully.")
+                return redirect("studio:home")
+            else:
+                messages.error(request, "Authentication failed after registration")
     else:
         form = UserRegisterForm()
 
-    return render(request, "userauths/sign-up.html", {'form': form})
+    return render(request, "userauths/sign-up.html", {"form": form})
 
 
 def logout_view(request):
-    """
-    Logs out the user and redirects to the sign-in page.
-    """
-    if request.user.is_authenticated:
-        logout(request)
-        messages.success(request, "You logged out successfully.")
+    logout(request)
+    messages.success(request, "You logged out.")
     return redirect("userauths:sign-in")
 
 

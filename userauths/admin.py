@@ -1,25 +1,28 @@
 from django.contrib import admin
-from userauths.models import User, ContactUs, Profile
+from django.contrib.auth.admin import UserAdmin
+from .models import User, Profile, ContactUs
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'is_active', 'is_approved')
-    list_editable = ('is_active', 'is_approved')
-    list_filter = ('is_active', 'is_approved')
-    search_fields = ('username', 'email')
+# User Admin
+class CustomUserAdmin(UserAdmin):
+    list_display = ('username', 'phone', 'email', 'is_staff')
+    list_filter = ('is_staff', 'is_superuser', 'is_active')
+    search_fields = ('username', 'phone', 'email')
+    ordering = ('username',)
 
-class ContactUsAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'email', 'subject']
-
+# Profile Admin
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'full_name', 'bio', 'phone', 'allocated_funds', 'location', 'manager', 'verified']
-    search_fields = ['user__username', 'full_name', 'email', 'phone']
-    list_filter = ['allocated_funds', 'location', 'manager', 'verified']
-    ordering = ['user__username']
-    # Allow inline editing of certain fields
-    list_editable = ['allocated_funds', 'location', 'manager', 'verified', 'full_name', 'bio', 'phone']  # Allow inline editing
-    fields = ['user', 'full_name', 'bio', 'phone', 'allocated_funds', 'location', 'manager', 'verified']
+    list_display = ('user', 'full_name', 'bio', 'address')
+    list_editable = ('full_name', 'bio', 'address')
+    search_fields = ('user__username', 'full_name')
+    list_select_related = ('user',)
 
-admin.site.register(User, UserAdmin)
-admin.site.register(ContactUs, ContactUsAdmin)
+# ContactUs Admin
+class ContactUsAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'phone', 'subject')
+    search_fields = ('full_name', 'email', 'subject')
+    list_filter = ('subject',)
+
+# Register your models
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
-
+admin.site.register(ContactUs, ContactUsAdmin)

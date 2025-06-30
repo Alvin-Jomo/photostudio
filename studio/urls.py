@@ -11,4 +11,5 @@ urlpatterns = [
     path('services/', views.ServicesView.as_view(), name='services'),
     path('about/', views.AboutView.as_view(), name='about'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('complain/', views.complain_page, name='complain_page'),  # Correctly defined
 ]

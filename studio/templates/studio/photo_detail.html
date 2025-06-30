@@ -12,20 +12,37 @@
             <p class="text-muted animate-fade-in">Category: <a href="{{ photo.category.get_absolute_url }}">{{ photo.category.name }}</a></p>
             
             <div class="my-4 animate-fade-in" style="animation-delay: 0.2s;">
-                {% if photo.discount_active %}
-                <h3 class="text-danger price-animation">
-                    <del class="text-muted">Ksh: {{ photo.price }}</del> 
-                    Ksh: {{ photo.discount_price }}
-                    <span class="badge bg-danger pulse">Sale!</span>
-                </h3>
-                {% else %}
-                <h3 class="price-animation">Ksh: {{ photo.price }}</h3>
-                {% endif %}
-                
-                <a href="{% url 'bookings:create_booking' service_id=1 %}" class="btn btn-primary btn-lg mt-3 hover-grow">
-                    Book a Similar Session
+    {% if photo.discount_active %}
+    <h3 class="text-danger price-animation">
+        <del class="text-muted">Ksh: {{ photo.price }}</del> 
+        Ksh: {{ photo.discount_price }}
+        <span class="badge bg-danger pulse">Mivlens</span>
+    </h3>
+    {% else %}
+    <h3 class="price-animation">Ksh: {{ photo.price }}</h3>
+    {% endif %}
+    
+    {% if related_services %}
+    <div class="dropdown">
+        <button class="btn btn-primary btn-lg mt-3 hover-grow dropdown-toggle" type="button" id="serviceDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Book a Similar Session
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="serviceDropdown">
+            {% for service in related_services %}
+            <li>
+                <a class="dropdown-item" href="{% url 'bookings:create_booking' service.id %}">
+                    {{ service.name }} - Ksh {{ service.base_price }}
                 </a>
-            </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <a href="{% url 'studio:services' %}" class="btn btn-primary btn-lg mt-3 hover-grow">
+        View All Services
+    </a>
+    {% endif %}
+</div>
             
             <div class="card mb-4 card-pop">
                 <div class="card-body">

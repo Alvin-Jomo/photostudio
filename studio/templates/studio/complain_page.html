@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}Complain{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form input, form textarea, form select {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        .complaints-section {
+            max-width: 1000px;
+            width: 100%;
+            margin: 30px auto;
+        }
+
+        .complaint {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .complaint h3 {
+            font-size: 20px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .complaint small {
+            display: block;
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .complaint p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .complaint img, .complaint video {
+            margin-top: 10px;
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .response {
+            background-color: #f0f9f1;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .response strong {
+            color: #4CAF50;
+        }
+
+        .response p {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .response small {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .no-complaints {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                max-width: 80%;
+                padding: 15px;
+            }
+
+            .complaints-section {
+                max-width: 90%;
+            }
+
+            .complaint {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Submit a Complaint</h1>
+
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="complaint-form" action="{% url 'studio:complain_page' %}">
+        {% csrf_token %}
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ request.user.profile.full_name }}" readonly>
+
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" name="contact" value="{{ request.user.phone }}" readonly>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image">
+
+        <label for="video">Video:</label>
+        <input type="file" id="video" name="video">
+
+        <p id="video-error" style="color: red; display: none;">Video file size should not exceed 10MB.</p>
+        <p style="color:brown; text-align:center;"><strong>! Image and video are optional !</strong></p>
+        
+        <button type="submit" id="submit-btn">Submit Complaint</button>
+    </form>
+
+    <div class="complaints-section">
+        <h2>Complaints</h2>
+        <div id="complaints-list">
+            {% if complaints %}
+                {% for complaint in complaints %}
+                    <div class="complaint">
+                        <h3>{{ complaint.name }}</h3>
+                        <small>Submitted on {{ complaint.date_submitted|date:"M d, Y h:i A" }}</small>
+                        <p>{{ complaint.message }}</p>
+
+                        {% if complaint.image %}
+                            <p><strong>Image:</strong></p>
+                            <img src="{{ complaint.image.url }}" alt="Complaint Image">
+                        {% endif %}
+
+                        {% if complaint.video %}
+                            <p><strong>Video:</strong></p>
+                            <video controls>
+                                <source src="{{ complaint.video.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% endif %}
+
+                        {% if complaint.response %}
+                            <div class="response">
+                                <strong>Admin Response:</strong>
+                                <p>{{ complaint.response }}</p>
+                                <small>Responded on: {{ complaint.date_responded|date:"M d, Y h:i A" }}</small>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-complaints">No complaints have been submitted yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#complaint-form').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: "{% url 'studio:complain_page' %}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#complaint-form')[0].reset();
+
+                            $('#complaints-list').prepend(`
+                                <div class="complaint">
+                                    <h3>${response.complaint.name}</h3>
+                                    <small>Submitted on ${response.complaint.date_submitted}</small>
+                                    <p>${response.complaint.message}</p>
+                                    ${response.complaint.image ? `<p><strong>Image:</strong></p><img src="${response.complaint.image}" alt="Complaint Image">` : ''}
+                                    ${response.complaint.video ? `<p><strong>Video:</strong></p><video controls><source src="${response.complaint.video}" type="video/mp4">Your browser does not support the video tag.</video>` : ''}
+                                </div>
+                            `);
+
+                            alert("Complaint submitted successfully!");
+                        } else {
+                            alert("Error submitting complaint. Please try again.");
+                        }
+                    },
+                    error: function() {
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

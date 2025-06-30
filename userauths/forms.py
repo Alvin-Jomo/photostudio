@@ -1,28 +1,32 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from userauths.models import User, Profile
+import re
 
 
 class UserRegisterForm(UserCreationForm):
     phone = forms.CharField(
-        max_length=20,
-        required=True,
-        widget=forms.TextInput(attrs={"placeholder": "Phone"})
+        max_length=10,
+        widget=forms.TextInput(attrs={'placeholder': 'phone No. eg., 07*** 0r 01*** format'}),
+        help_text="Enter a valid 10-digit phone number starting with 07 or 01."
     )
+    username = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"username"}))
+    password1 = forms.CharField(widget=forms.TextInput(attrs={"placeholder":"Enter password"}))
+    password2= forms.CharField(widget=forms.TextInput(attrs={"placeholder":"confirm password"}))
+
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'phone', 'password1', 'password2']
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        if commit:
-            user.save()
-            # Save phone to Profile
-            profile, created = Profile.objects.get_or_create(user=user)
-            profile.phone = self.cleaned_data.get('phone')
-            profile.save()
-        return user
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone")
+        if not re.match(r"^(07|01)\d{8}$", phone):
+            raise forms.ValidationError("Phone number must start with 07 or 01 and be exactly 10 digits.")
+        return phone
+
+
 
 class ProfileForm(forms.ModelForm):
     full_name = forms.CharField(

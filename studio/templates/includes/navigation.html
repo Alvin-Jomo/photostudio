@@ -70,6 +70,12 @@
                         Contact
                     </a>
                 </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'complain_page' %}active{% endif %}" 
+                       href="{% url 'studio:complain_page' %}">
+                        file complains
+                    </a>
+                </li>
             </ul>
             
             <!-- Right-aligned User Navigation -->
