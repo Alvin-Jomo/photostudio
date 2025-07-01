@@ -41,7 +41,6 @@
         <span></span>
     </div>
 </section>
-
 <!-- Featured Photos Section -->
 <section class="py-5 featured-section">
     <div class="container">
@@ -82,7 +81,7 @@
         </div>
         <div class="row g-4">
             {% for service in services %}
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+            <div class="col-md-19 col-lg-14" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
                 <div class="service-card-wrapper">
                     {% include 'studio/partials/_service_card.html' %}
                 </div>
